@@ -9,6 +9,13 @@ public class Card : MonoBehaviour
     public SpriteRenderer backCard;
 
 
+    public void UpdateCardObject(CardData cardObject)
+    {
+        this.frontCard.sprite = cardObject.front;
+        this.backCard.sprite = cardObject.back;
+        this.cardObject = cardObject;
+        name = cardObject.cardType.ToString() + " " + cardObject.realValue;
+    }
     // Start is called before the first frame update
     void Start()
     {

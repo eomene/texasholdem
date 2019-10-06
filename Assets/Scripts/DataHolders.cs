@@ -2,46 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class CardData 
+public static class DataHolders 
 {
-    public Sprite back;
-    public Sprite front;
-    public GameEnums.CardType cardType;
-    public int realValue;
-    public string visual;
+    private static int _startCash = 1000;
+    private static float _cardFlySpeed = 1f;
+    private static float _cardFlipSpeed = 0.25f;
+    private static float _delayBetweenPlayerCreation = .6f;
+    private static GameObject _flyingCard;
 
-    public CardData(Sprite back, Sprite front, GameEnums.CardType cardType, int realValue, GameObject card)
+
+
+    public static int startCash
     {
-        this.back = back;
-        this.front = front;
-        this.cardType = cardType;
-        this.realValue = realValue;
-        //if (realValue >= 11)
-        //this.realValue = 10;
-        //if(realValue==10)
-        Card newCard = card.GetComponent<Card>();
-        newCard.frontCard.sprite = front;
-        newCard.backCard.sprite = back;
-        newCard.cardObject = this;
-        card.name = cardType.ToString() + " " + realValue;
+        set { _startCash = value; }
+        get { return _startCash; }
     }
-
-}
-[System.Serializable]
-public class PlayerData
-{
-    public List<Card> cards = new List<Card>();
-    public int cash;
-    public int currentBet;
-    public bool isTurn;
-    public Sprite playerIcon;
-    public string playerName;
-}
-
-[System.Serializable]
-public class GameEnums
-{
-    public enum CardType { diamonds,hearts,spades,clubs};
+    public static float cardFlySpeed
+    {
+        set { _cardFlySpeed = value; }
+        get { return _cardFlySpeed; }
+    }
+    public static float cardFlipSpeed
+    {
+        set { _cardFlipSpeed = value; }
+        get { return _cardFlipSpeed; }
+    }
+    public static float delayBetweenPlayerCreation
+    {
+        set { _delayBetweenPlayerCreation = value; }
+        get { return _delayBetweenPlayerCreation; }
+    }
+    public static GameObject flyingCard
+    {
+        set { _flyingCard = value; }
+        get { return _flyingCard; }
+    }
 
 }
