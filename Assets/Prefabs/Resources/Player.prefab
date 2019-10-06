@@ -680,10 +680,12 @@ MonoBehaviour:
     cards: []
     cash: 0
     currentBet: 0
+    currentBetToTal: 0
     isTurn: 0
     playerIcon: {fileID: 0}
     playerName: 
     playerGameObject: {fileID: 0}
+    player: {fileID: 0}
   location: {fileID: 0}
   playerIcon: {fileID: 2454426106219705309}
   playerCards:
@@ -691,7 +693,7 @@ MonoBehaviour:
   - {fileID: 44985512204970758}
   playerName: {fileID: 2454426107388205455}
   cash: {fileID: 2454426106626068105}
-  currentBet: {fileID: 2454426105956831004}
+  currentBetTotal: {fileID: 2454426105956831004}
 --- !u!1 &5236508531122884259
 GameObject:
   m_ObjectHideFlags: 0

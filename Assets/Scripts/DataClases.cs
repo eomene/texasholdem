@@ -30,12 +30,16 @@ public class CardData
 public class PlayerData
 {
     public List<CardData> cards = new List<CardData>();
-    public int cash;
+    public int cash;  
     public int currentBet;
+    public int currentBetToTal;
     public bool isTurn;
+    public bool isRealPlayer;
     public Sprite playerIcon;
     public string playerName;
     public GameObject playerGameObject;
+    public Player player;
+    public int playerID;
 
     public PlayerData(List<CardData> cards, int cash, int currentBet, Sprite playerIcon, string playerName, GameObject playerGameObject)
     {
@@ -45,6 +49,17 @@ public class PlayerData
         this.playerIcon = playerIcon;
         this.playerName = playerName;
         this.playerGameObject = playerGameObject;
+        player = playerGameObject.GetComponent<Player>();
+    }
+
+    public void Bet(int amount){player.Bet(amount);}
+    public void Call(){player.Call();}
+    public void Raise(int amount){player.Raise(amount);}
+    public void Fold(){player.Fold();}
+    public void AllIn() {player.AllIn();}
+    public void setToCurrent()
+    {
+        player.setToCurrent();
     }
 }
 

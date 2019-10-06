@@ -11,6 +11,7 @@ public class Card : MonoBehaviour
 
     public void UpdateCardObject(CardData cardObject)
     {
+        //set the look of the card and data for card
         this.frontCard.sprite = cardObject.front;
         this.backCard.sprite = cardObject.back;
         this.cardObject = cardObject;
