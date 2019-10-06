@@ -17,15 +17,19 @@ public class CardData
         this.front = front;
         this.cardType = cardType;
         this.realValue = realValue;
+        //if (realValue >= 11)
+        //this.realValue = 10;
+        //if(realValue==10)
         Card newCard = card.GetComponent<Card>();
         newCard.frontCard.sprite = front;
         newCard.backCard.sprite = back;
         newCard.cardObject = this;
+        card.name = cardType.ToString() + " " + realValue;
     }
 
 }
 [System.Serializable]
-public class Player
+public class PlayerData
 {
     public List<Card> cards = new List<Card>();
     public int cash;
