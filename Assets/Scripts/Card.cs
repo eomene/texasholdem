@@ -15,7 +15,7 @@ public class Card : MonoBehaviour
         this.frontCard.sprite = cardObject.front;
         this.backCard.sprite = cardObject.back;
         this.cardObject = cardObject;
-        name = cardObject.cardType.ToString() + " " + cardObject.realValue;
+        name = cardObject.cardEnum.ToString() + " " + cardObject.realValue;
     }
     // Start is called before the first frame update
     void Start()

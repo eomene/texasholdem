@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using System.Linq;
 
 public class GameController : MonoBehaviour
 {
@@ -76,8 +77,8 @@ public class GameController : MonoBehaviour
             //create a new player data from the class to store all the variables we need
             PlayerData playerData = new PlayerData(playerCards, DataHolders.startCash, 0, playerIcons[i], randomNames[i], newPlayerGameObject);
             //make the third player the real player
-            if (i == 2)
-                playerData.isRealPlayer = true;
+            //if (i == 2)
+            //    playerData.isRealPlayer = true;
             //add the data to the player script attached to the player prefab, also pass in the position the cards will fly from
             newPlayer.UpdatePlayerData(playerData, startFlyPosition);
         
@@ -113,7 +114,7 @@ public class GameController : MonoBehaviour
         card = Resources.Load<GameObject>("Card");
         CardData cardObject = null;
         //create a temp enum for the type of card
-        GameEnums.CardType cardtype = GameEnums.CardType.clubs;
+        GameEnums.SuitEnum cardtype = GameEnums.SuitEnum.Clubs;
         GameObject newCardGameObject = null;
         //create a parent for all the cards
         GameObject parent = new GameObject("Card Deck");
@@ -122,7 +123,7 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < diamonds.Length; i++)
         {
             //set the type of card
-            cardtype = GameEnums.CardType.diamonds;
+            cardtype = GameEnums.SuitEnum.Diamonds;
             //create it and assign the parent card to it
             newCardGameObject = Instantiate(card, parent.transform);
             //get the card script attached so we can set the variables associated
@@ -136,7 +137,7 @@ public class GameController : MonoBehaviour
         }
         for (int i = 0; i < clubs.Length; i++)
         {
-            cardtype = GameEnums.CardType.clubs;
+            cardtype = GameEnums.SuitEnum.Clubs;
             newCardGameObject = Instantiate(card, parent.transform);
             Card newCard = newCardGameObject.GetComponent<Card>();
             cardObject = new CardData(back, clubs[i], cardtype, i + 1, newCardGameObject);
@@ -146,7 +147,7 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < hearts.Length; i++)
         {
-            cardtype = GameEnums.CardType.hearts;
+            cardtype = GameEnums.SuitEnum.Hearts;
             newCardGameObject = Instantiate(card,parent.transform);
             Card newCard = newCardGameObject.GetComponent<Card>();
             cardObject = new CardData(back, hearts[i], cardtype, i + 1, newCardGameObject);
@@ -156,7 +157,7 @@ public class GameController : MonoBehaviour
 
         for (int i = 0; i < spades.Length; i++)
         {
-            cardtype = GameEnums.CardType.spades;
+            cardtype = GameEnums.SuitEnum.Spades;
             newCardGameObject = Instantiate(card, parent.transform);
             Card newCard = newCardGameObject.GetComponent<Card>();
             cardObject = new CardData(back, spades[i], cardtype, i + 1, newCardGameObject);
@@ -213,7 +214,9 @@ public class GameController : MonoBehaviour
             }
             else if (DataHolders.gameRound == 4)
             {
+                GameOver();
                 //end game logic
+                yield break;
             }
             yield return new WaitForSeconds(DataHolders.delaySpeed);
             DataHolders.currentTurn = 0;
@@ -261,6 +264,14 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < DataHolders.players.Count; i++)
             DataHolders.players[i].cards.Add(card);
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("Game Ended");
+        
+        //equality is based on rank, not cards/suits/etc... so, for example, two Jack high straights
+        //would be equal even though the cards have different suits.
     }
 
 }
