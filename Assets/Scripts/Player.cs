@@ -14,7 +14,6 @@ public class Player : MonoBehaviour
     public TextMeshProUGUI cash;
     public TextMeshProUGUI currentBetTotal;
 
-
     // Start is called before the first frame update
     void Start()
     {
@@ -22,6 +21,7 @@ public class Player : MonoBehaviour
     }
     public void UpdatePlayerData(PlayerData playerData,Transform startFlyPsition)
     {
+        DataHolders.tempCounter++;
         //update data for the player script using the player data 
         this.playerData = playerData;
         this.cash.text = playerData.cash.ToString();
@@ -29,31 +29,50 @@ public class Player : MonoBehaviour
         this.currentBetTotal.text = playerData.currentBet.ToString();
         this.cash.text = playerData.cash.ToString();
         this.playerIcon.sprite = playerData.playerIcon;
+        StartCoroutine(delayCardDraw(startFlyPsition));
+ 
 
+    }
+
+    IEnumerator delayCardDraw(Transform startFlyPsition)
+    {
         //loop through all the cards the player has, so we can display it
-        for(int i =0;i<playerCards.Length;i++)
+        for (int i = 0; i < playerCards.Length; i++)
         {
             //set the sprite 
             playerCards[i].GetComponent<Image>().sprite = playerData.cards[i].front;
             //create a dummy card to fly into the screen
-            GameObject dummyCard = Instantiate(DataHolders.flyingCard, startFlyPsition.position,Quaternion.identity,playerData.playerGameObject.transform);
+            GameObject dummyCard = Instantiate(DataHolders.flyingCard, startFlyPsition.position, Quaternion.identity, playerData.playerGameObject.transform);
             //assign the real card
             GameObject playercard = playerCards[i];
+
+
             //move dummy card to the real card location
-             dummyCard.transform.DOMove(playercard.transform.position, DataHolders.cardFlySpeed).OnComplete(() =>
+            dummyCard.transform.DOMove(playercard.transform.position, DataHolders.delaySpeed).OnComplete(() =>
             {
-                //when dummy card is at the real card location scale the x to zero, to give the illusion of flipping
-                dummyCard.transform.DOScaleX(0, DataHolders.cardFlipSpeed).OnComplete(() =>
+                //if real player flip card
+
+                if (playerData.isRealPlayer)
                 {
-                    //scale the real card to 1, card scale was previous 0. This completes the fliping illusion
-                    playercard.transform.DOScaleX(1, DataHolders.cardFlipSpeed).OnComplete(() =>
+                    //when dummy card is at the real card location scale the x to zero, to give the illusion of flipping
+                    dummyCard.transform.DOScaleX(0, DataHolders.cardFlipSpeed).OnComplete(() =>
                     {
+                        //scale the real card to 1, card scale was previous 0. This completes the fliping illusion
+                        playercard.transform.DOScaleX(1, DataHolders.cardFlipSpeed).OnComplete(() =>
+                        {
 
+                        });
                     });
-                });
-             }).SetEase(Ease.Linear);//set ease type for movement
+                }
+            }).SetEase(Ease.Linear);//set ease type for movement
+            yield return new WaitForSeconds(4);
+            //bet for the first two players just like in the real game
+            if (DataHolders.tempCounter == DataHolders.currentPlayers.Count && i == playerCards.Length - 1)
+            {
+                DataHolders.tempCounter = 0;
+                DataHolders.gameController.StartCoroutine(DataHolders.gameController.FirstPlay());
+            }
         }
-
     }
     //bet amount
     public void Bet(int amount)
@@ -63,13 +82,16 @@ public class Player : MonoBehaviour
         //add it to the current bet
         playerData.currentBet += amount;
 
-        DataHolders.currentBet = amount;
+        DataHolders.lastBet = amount;
+
+        DataHolders.totalBetOfRound += amount;
+
         //create chip that would be displayed
         GameObject go = Instantiate(DataHolders.chip,transform.position,Quaternion.identity,DataHolders.mainCanvas);
         //set the amount of the ship
         go.GetComponent<Chip>().SetAmount(amount);
         //move chip to the place set in the center
-        go.transform.DOMove(DataHolders.chipPositionOnBoard.position, DataHolders.cardFlySpeed).OnComplete(()=>
+        go.transform.DOMove(DataHolders.chipPositionOnBoard.position, DataHolders.delaySpeed).OnComplete(()=>
         {
             //update the ui text when the chip has arriced
             UpdatePlayerUI();
@@ -84,11 +106,11 @@ public class Player : MonoBehaviour
     }
     public void Call()
     {
-        Bet(DataHolders.currentBet);
+        Bet(DataHolders.lastBet);
     }
     public void Raise(int amount)
     {
-        Bet(DataHolders.currentBet + amount);
+        Bet(DataHolders.lastBet + amount);
     }
     public void Fold()
     {

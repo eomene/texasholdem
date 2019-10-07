@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using DG.Tweening;
 
 public class GameController : MonoBehaviour
 {
@@ -16,8 +18,6 @@ public class GameController : MonoBehaviour
     Sprite[] playerIcons;
     GameObject card;
     GameObject player;
-    //int currentTurn;
-    //List<int> currentPlayers = new List<int>();
 
 
     void Awake()
@@ -30,16 +30,29 @@ public class GameController : MonoBehaviour
     void Init()
     {
         //set some initial variables
-        DataHolders.gameController = this;
+
         player = Resources.Load<GameObject>("Player");
         playerIcons = Resources.LoadAll<Sprite>("PlayerIcons/icons");
+
+        DataHolders.gameController = this;
         DataHolders.flyingCard = Resources.Load<GameObject>("FlyingCard");
         DataHolders.chip = Resources.Load<GameObject>("Chip");
         DataHolders.mainCanvas = Canvas;
         DataHolders.chipPositionOnBoard = chipPositionOnBoard;
         DataHolders.controls = Resources.Load<GameObject>("Controls");
+        GameObject UIObject = Resources.Load<GameObject>("UIDisplay");
+        GameObject ui = Instantiate(UIObject, Canvas);
+        DataHolders.uIDisplay = ui.GetComponent<UIDisplay>();
+        DataHolders.currentTurn = 0;
+        DataHolders.totalBetOfRound = 0;
+        DataHolders.gameRound = 0;
+        DataHolders.dealerPosition = startFlyPosition;
+
+
         foreach (Transform tr in table)
             playerPositions.Add(tr);
+
+        
     }
 
     public IEnumerator CreatePlayers()
@@ -73,9 +86,7 @@ public class GameController : MonoBehaviour
             DataHolders.currentPlayers.Add(i);
             //delay a bit so all players do not get cards at the same time
             yield return new WaitForSeconds(DataHolders.delayBetweenPlayerCreation);
-            //bet for the first two players just like in the real game
-            if (i == playerPositions.Count-1)
-                StartCoroutine(FirstPlay());
+
         
         }
     }
@@ -156,29 +167,87 @@ public class GameController : MonoBehaviour
         
     }
 
-    IEnumerator FirstPlay()
+    public IEnumerator FirstPlay()
     {
-        yield return new WaitForSeconds(DataHolders.cardFlySpeed);
+       // MoveCardsToTable(Players[0].cards);
+        yield return new WaitForSeconds(DataHolders.delaySpeed);
         //bet 20 for first player
         Players[DataHolders.currentTurn].Bet(20);
-        //DataHolders.currentTurn++;
-        //yield return new WaitForSeconds(DataHolders.cardFlySpeed);
-        ////double prev bet for second player at start of game
-        //Players[DataHolders.currentTurn].Bet(20 * 2);
     }
     public IEnumerator Next(int current)
     {
-        yield return new WaitForSeconds(DataHolders.cardFlySpeed);
-        
-        if ((DataHolders.currentTurn + 1) < DataHolders.currentPlayers.Count - 1)
+        yield return new WaitForSeconds(DataHolders.delaySpeed);
+        if ((DataHolders.currentTurn + 1) < DataHolders.currentPlayers.Count )
         {
             DataHolders.currentTurn++;
             Players[DataHolders.currentTurn].setToCurrent();
         }
         else
         {
+            DataHolders.gameRound++;
+            if (DataHolders.gameRound == 1)
+            {
+                //List<CardData> dealercards = new List<CardData>();
+                //add three of the last cards to the stack of card decks
+                DataHolders.dealerCards.Add(deck.Pop());
+                DataHolders.dealerCards.Add(deck.Pop());
+                DataHolders.dealerCards.Add(deck.Pop());
+                MoveCardsToTable(DataHolders.dealerCards);
+            }
+            else if (DataHolders.gameRound == 2)
+            {
+                //List<CardData> dealercards = new List<CardData>();
+                //add one of the last cards to the stack of card decks
+                DataHolders.dealerCards.Add(deck.Pop());
+                MoveCardsToTable(DataHolders.dealerCards);
+            }
+            else if (DataHolders.gameRound == 3)
+            {
+                // List<CardData> dealercards = new List<CardData>();
+                //add one of the last cards to the stack of card decks
+                DataHolders.dealerCards.Add(deck.Pop());
+                MoveCardsToTable(DataHolders.dealerCards);
+            }
+            else if (DataHolders.gameRound == 4)
+            {
+                //end game logic
+            }
+            yield return new WaitForSeconds(DataHolders.delaySpeed);
             DataHolders.currentTurn = 0;
             Players[DataHolders.currentTurn].setToCurrent();
+        }
+
+    }
+    public void MoveCardsToTable(List<CardData> playerCards)
+    {
+        for (int i = 0; i < playerCards.Count; i++)
+        {
+            if (DataHolders.uIDisplay.centerCards.Count >= playerCards.Count)
+            {
+                if (!DataHolders.uIDisplay.centerCards[i].isFilled)
+                {
+                    DataHolders.uIDisplay.centerCards[i].isFilled = true;
+
+                    DataHolders.uIDisplay.centerCards[i].img.sprite = playerCards[i].front;
+                    //create a dummy card to fly into the screen
+                    GameObject dummyCard = Instantiate(DataHolders.flyingCard, startFlyPosition.position, Quaternion.identity, Canvas);
+                    //assign the real card
+                    GameObject playercard = DataHolders.uIDisplay.centerCards[i].card;
+
+                    //move dummy card to the real card location
+                    dummyCard.transform.DOMove(playercard.transform.position, DataHolders.delaySpeed).OnComplete(() =>
+                    {
+                    //if real player flip card
+
+                    //when dummy card is at the real card location scale the x to zero, to give the illusion of flipping
+                    dummyCard.transform.DOScaleX(0, DataHolders.cardFlipSpeed).OnComplete(() =>
+                            {
+                                playercard.SetActive(true);
+                            });
+
+                    }).SetEase(Ease.Linear);//set ease type for movement
+                }
+            }
         }
     }
     public void Bet()

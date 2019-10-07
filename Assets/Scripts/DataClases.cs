@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 [System.Serializable]
 public class CardData 
@@ -62,7 +63,21 @@ public class PlayerData
         player.setToCurrent();
     }
 }
+[System.Serializable]
+public class CenterCard
+{
+    public GameObject card;
+    public Image img;
+    public bool isFilled;
 
+    public CenterCard(GameObject card, Image img,bool isFilled)
+    {
+        this.card = card;
+        this.img = img;
+        this.isFilled = isFilled;
+    }
+
+}
 [System.Serializable]
 public class GameEnums
 {

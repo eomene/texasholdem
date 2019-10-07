@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using TMPro;
 public class Controls : MonoBehaviour
 {
@@ -25,6 +26,11 @@ public class Controls : MonoBehaviour
     public void SetControls(PlayerData playerData)
     {
         this.playerData = playerData;
+        for (int i = 0; i < playerData.cards.Count; i++) 
+        {
+            cardVisual[i].GetComponent<Image>().sprite = playerData.cards[i].front;
+            cardVisual[i].SetActive(true);
+        }
         gameObject.SetActive(true);
     }
     public void Call()
