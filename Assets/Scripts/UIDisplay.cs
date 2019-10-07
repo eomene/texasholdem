@@ -9,6 +9,7 @@ public class UIDisplay : MonoBehaviour
     public TextMeshProUGUI playerTurn;
     public TextMeshProUGUI round;
     public TextMeshProUGUI totalBetOfRound;
+    public TextMeshProUGUI lastBet;
     public Transform centerCardsHolder;
     public List<CenterCard> centerCards = new List<CenterCard>();
 
@@ -24,12 +25,14 @@ public class UIDisplay : MonoBehaviour
         DataHolders.onPlayerTurnUpdated.AddListener(UpdatePlayerTurn);
         DataHolders.onRoundUpdated.AddListener(UpdateRound);
         DataHolders.onTotalBetUpdated.AddListener(UpdateTotalBet);
+        DataHolders.onLastBetUpdated.AddListener(UpdateLastBet);
     }
     void OnDisable()
     {
         DataHolders.onPlayerTurnUpdated.RemoveListener(UpdatePlayerTurn);
         DataHolders.onRoundUpdated.RemoveListener(UpdateRound);
         DataHolders.onTotalBetUpdated.RemoveListener(UpdateTotalBet);
+        DataHolders.onLastBetUpdated.RemoveListener(UpdateLastBet);
     }
 
     // Update is called once per frame
@@ -48,5 +51,9 @@ public class UIDisplay : MonoBehaviour
     public void UpdateTotalBet()
     {
         totalBetOfRound.text = "Total Bet: " + DataHolders.totalBetOfRoundStr;
+    }
+    public void UpdateLastBet()
+    {
+        lastBet.text = "Last Bet: " + DataHolders.lastBet;
     }
 }

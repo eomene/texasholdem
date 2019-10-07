@@ -10,6 +10,7 @@ public class Controls : MonoBehaviour
     public List<CardData> cards = new List<CardData>();
     public Transform cardsHolder;
     List<GameObject> cardVisual = new List<GameObject>();
+    public RaiseUIScript raiseUI;
     // Start is called before the first frame update
     void Awake()
     {
@@ -21,6 +22,11 @@ public class Controls : MonoBehaviour
     void Update()
     {
         
+    }
+    public void ShowText(string text)
+    {
+        raiseUI.UpdateText(text);
+        raiseUI.gameObject.SetActive(true);
     }
 
     public void SetControls(PlayerData playerData)
@@ -40,12 +46,20 @@ public class Controls : MonoBehaviour
     }
     public void Raise()
     {
-        if (!string.IsNullOrEmpty(raiseAmount.text))
+        if (!string.IsNullOrEmpty(raiseAmount.text) && int.Parse(raiseAmount.text) >= (DataHolders.lastBet * 2))
         {
             int val = 0;
             int.TryParse(raiseAmount.text, out val);
             playerData.Raise(val);
             Destroy(gameObject);
+        }
+        else if (string.IsNullOrEmpty(raiseAmount.text))
+        {
+            ShowText("Enter amount to raise, It should be at least double current bet of " + DataHolders.lastBet);
+        }
+        else if (!string.IsNullOrEmpty(raiseAmount.text) && int.Parse(raiseAmount.text)<(DataHolders.lastBet * 2))
+        {
+            ShowText("Please Enter an amount that is at least double current bet of " + DataHolders.lastBet);
         }
     }
     public void Fold()

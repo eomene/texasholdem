@@ -46,6 +46,7 @@ public class GameController : MonoBehaviour
         DataHolders.currentTurn = 0;
         DataHolders.totalBetOfRound = 0;
         DataHolders.gameRound = 0;
+        DataHolders.lastBet = 0;
         DataHolders.dealerPosition = startFlyPosition;
 
 

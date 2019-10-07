@@ -38,6 +38,7 @@ public static class DataHolders
     public static UnityEvent onPlayerTurnUpdated = new UnityEvent();
     public static UnityEvent onRoundUpdated = new UnityEvent();
     public static UnityEvent onTotalBetUpdated = new UnityEvent();
+    public static UnityEvent onLastBetUpdated = new UnityEvent();
 
 
     public static int startCash
@@ -47,7 +48,12 @@ public static class DataHolders
     }
     public static int lastBet
     {
-        set { _lastBet = value; }
+        set
+        {
+            _lastBet = value;
+            if (onLastBetUpdated != null)
+                onLastBetUpdated.Invoke();
+        }
         get { return _lastBet; }
     }
     public static int currentTurn
