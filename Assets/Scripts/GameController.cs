@@ -23,6 +23,11 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
+
+    }
+
+    public void Play()
+    {
         Init();
         CreateDeck();
         Shuffle();

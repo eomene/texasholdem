@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using DG.Tweening;
 public class Controls : MonoBehaviour
 {
     public PlayerData playerData;
@@ -11,13 +12,34 @@ public class Controls : MonoBehaviour
     public Transform cardsHolder;
     List<GameObject> cardVisual = new List<GameObject>();
     public RaiseUIScript raiseUI;
+    public Transform final;
+    Vector3 prevLocation;
     // Start is called before the first frame update
     void Awake()
     {
         foreach (Transform tr in cardsHolder)
             cardVisual.Add(tr.gameObject);
+        prevLocation = cardsHolder.transform.position;
+
+
+    }
+    private void OnEnable()
+    {
+      
     }
 
+    public void ShowCards()
+    {
+        cardsHolder.DOMoveY(final.transform.position.y, 1f);
+    }
+    public void HideCards()
+    {
+        cardsHolder.DOMoveY(prevLocation.y, 1f);
+    }
+    public void ToggleCardHolder()
+    {
+
+    }
     // Update is called once per frame
     void Update()
     {
