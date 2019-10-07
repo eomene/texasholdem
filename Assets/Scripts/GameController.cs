@@ -25,7 +25,15 @@ public class GameController : MonoBehaviour
 
     void Awake()
     {
-       // Play();
+        Init();
+        CreateDeck();
+        Shuffle();
+        MenuFader.SetActive(true);
+        MenuFader.transform.parent.gameObject.SetActive(true);
+        MenuFader.GetComponent<Image>().DOFade(0, 1.5f).OnComplete(() =>
+        {
+            MenuFader.SetActive(false);
+        });
     }
 
     public void Play()
@@ -39,9 +47,6 @@ public class GameController : MonoBehaviour
             GameFader.GetComponent<Image>().DOFade(0, DataHolders.delaySpeed).OnComplete(() =>
             {
                 GameFader.SetActive(false);
-                Init();
-                CreateDeck();
-                Shuffle();
                 StartCoroutine(CreatePlayers());
             });
         });
