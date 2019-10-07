@@ -82,8 +82,10 @@ public class GameController : MonoBehaviour
             playerData.playerID = i;
             //add the player to the list of players so we can use it later for gameplay
             Players.Add(playerData);
+            //add the player to the list of players so we can use it later for gameplay in data holder
+            DataHolders.players.Add(playerData);
             //add players to the array to go through it
-            DataHolders.currentPlayers.Add(i);
+            //DataHolders.currentPlayers.Add(i);
             //delay a bit so all players do not get cards at the same time
             yield return new WaitForSeconds(DataHolders.delayBetweenPlayerCreation);
 
@@ -172,15 +174,15 @@ public class GameController : MonoBehaviour
        // MoveCardsToTable(Players[0].cards);
         yield return new WaitForSeconds(DataHolders.delaySpeed);
         //bet 20 for first player
-        Players[DataHolders.currentTurn].Bet(20);
+        DataHolders.players[DataHolders.currentTurn].Bet(20);
     }
     public IEnumerator Next(int current)
     {
         yield return new WaitForSeconds(DataHolders.delaySpeed);
-        if ((DataHolders.currentTurn + 1) < DataHolders.currentPlayers.Count )
+        if ((current) < DataHolders.players.Count )
         {
-            DataHolders.currentTurn++;
-            Players[DataHolders.currentTurn].setToCurrent();
+            DataHolders.currentTurn = current;
+            DataHolders.players[DataHolders.currentTurn].setToCurrent();
         }
         else
         {
@@ -214,7 +216,7 @@ public class GameController : MonoBehaviour
             }
             yield return new WaitForSeconds(DataHolders.delaySpeed);
             DataHolders.currentTurn = 0;
-            Players[DataHolders.currentTurn].setToCurrent();
+            DataHolders.players[DataHolders.currentTurn].setToCurrent();
         }
 
     }
@@ -250,8 +252,8 @@ public class GameController : MonoBehaviour
             }
         }
     }
-    public void Bet()
-    {
-        Players[0].Bet(20);
-    }
+    //public void Bet()
+    //{
+    //    Players[0].Bet(20);
+    //}
 }

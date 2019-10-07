@@ -27,8 +27,10 @@ public static class DataHolders
     private static Transform _chipPositionOnBoard;
     private static Transform _dealerPosition;
     //lists
-    private static List<int> _currentPlayers = new List<int>();
+    //private static List<int> _currentPlayers = new List<int>();
     private static List<CardData> _dealerCards = new List<CardData>();
+    private static List<PlayerData> _players = new List<PlayerData>();
+    private static List<PlayerData> _foldedPlayers = new List<PlayerData>();
     //scripts
     private static GameController _gameController;
     private static UIDisplay _uIDisplay;
@@ -136,15 +138,25 @@ public static class DataHolders
         set { _dealerPosition = value; }
         get { return _dealerPosition; }
     }
-    public static List<int> currentPlayers
-    {
-        set { _currentPlayers = value; }
-        get { return _currentPlayers; }
-    }
+    //public static List<int> currentPlayers
+    //{
+    //    set { _currentPlayers = value; }
+    //    get { return _currentPlayers; }
+    //}
     public static List<CardData> dealerCards
     {
         set { _dealerCards = value; }
         get { return _dealerCards; }
+    }
+    public static List<PlayerData> players
+    {
+        set { _players = value; }
+        get { return _players; }
+    }
+    public static List<PlayerData> foldedPlayers
+    {
+        set { _foldedPlayers = value; }
+        get { return _foldedPlayers; }
     }
     public static GameController gameController
     {

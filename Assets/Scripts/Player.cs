@@ -67,7 +67,7 @@ public class Player : MonoBehaviour
             }).SetEase(Ease.Linear);//set ease type for movement
             yield return new WaitForSeconds(4);
             //bet for the first two players just like in the real game
-            if (DataHolders.tempCounter == DataHolders.currentPlayers.Count && i == playerCards.Length - 1)
+            if (DataHolders.tempCounter == DataHolders.players.Count && i == playerCards.Length - 1)
             {
                 DataHolders.tempCounter = 0;
                 DataHolders.gameController.StartCoroutine(DataHolders.gameController.FirstPlay());
@@ -100,7 +100,8 @@ public class Player : MonoBehaviour
                 go.transform.SetParent(DataHolders.chipPositionOnBoard);
             else
                 Destroy(go);
-            Next();
+            //to go to the next player
+            Next(DataHolders.currentTurn + 1);
         });
        
     }
@@ -115,7 +116,11 @@ public class Player : MonoBehaviour
     public void Fold()
     {
         //remove player
-        DataHolders.currentPlayers.Remove(playerData.playerID);
+       // DataHolders.currentPlayers.Remove(playerData.playerID);
+        DataHolders.players.Remove(playerData);
+        DataHolders.foldedPlayers.Add(playerData);
+        //pass same id, since player has been removed from the list, to prevent skippig previous next player
+        Next(DataHolders.currentTurn);
     }
     public void AllIn()
     {
@@ -138,9 +143,9 @@ public class Player : MonoBehaviour
             StartCoroutine(delayAIPlay());
         }
     }
-    public void Next()
+    public void Next(int current)
     {
-        DataHolders.gameController.StartCoroutine(DataHolders.gameController.Next(DataHolders.currentTurn));
+        DataHolders.gameController.StartCoroutine(DataHolders.gameController.Next(current));
     }
     IEnumerator delayAIPlay()
     {
