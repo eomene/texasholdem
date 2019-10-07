@@ -42,18 +42,18 @@ public class UIDisplay : MonoBehaviour
     }
     public void UpdatePlayerTurn()
     {
-        playerTurn.text = "Current Turn: "+DataHolders.currentTurnStr;
+        playerTurn.text = DataHolders.currentTurnStr;
     }
     public void UpdateRound()
     {
-        round.text = "Current Round: "+DataHolders.gameRoundStr;
+        round.text = DataHolders.gameRoundStr;
     }
     public void UpdateTotalBet()
     {
-        totalBetOfRound.text = "Total Bet: " + DataHolders.totalBetOfRoundStr;
+        totalBetOfRound.text = DataHolders.totalBetOfRoundStr;
     }
     public void UpdateLastBet()
     {
-        lastBet.text = "Last Bet: " + DataHolders.lastBet;
+        lastBet.text = DataHolders.lastBet.ToString();
     }
 }

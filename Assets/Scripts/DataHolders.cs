@@ -15,7 +15,7 @@ public static class DataHolders
     public static int tempCounter = 0;
     public static int indexOfCenterCards = 0;
     //floats
-    private static float _delaySpeed = .05f;
+    private static float _delaySpeed = 1f;
     private static float _cardFlipSpeed = 0.25f;
     private static float _delayBetweenPlayerCreation = .6f;
     //GameObjects

@@ -135,7 +135,7 @@ public class Player : MonoBehaviour
     {
        if(playerData.isRealPlayer)
         {
-            Controls control = Instantiate(DataHolders.controls).GetComponent<Controls>();
+            Controls control = DataHolders.controls.GetComponent<Controls>();
             control.SetControls(playerData);
         }
        else

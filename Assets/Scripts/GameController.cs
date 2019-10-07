@@ -19,19 +19,33 @@ public class GameController : MonoBehaviour
     Sprite[] playerIcons;
     GameObject card;
     GameObject player;
+    public GameObject MenuFader;
+    public GameObject GameFader;
 
 
     void Awake()
     {
-
+       // Play();
     }
 
     public void Play()
     {
-        Init();
-        CreateDeck();
-        Shuffle();
-        StartCoroutine(CreatePlayers());
+        GameFader.SetActive(true);
+        MenuFader.SetActive(true);
+        MenuFader.GetComponent<Image>().DOFade(1, DataHolders.delaySpeed).OnComplete(()=>
+        {
+            MenuFader.SetActive(false);
+            MenuFader.transform.parent.gameObject.SetActive(false);
+            GameFader.GetComponent<Image>().DOFade(0, DataHolders.delaySpeed).OnComplete(() =>
+            {
+                GameFader.SetActive(false);
+                Init();
+                CreateDeck();
+                Shuffle();
+                StartCoroutine(CreatePlayers());
+            });
+        });
+
     }
     void Init()
     {
@@ -45,7 +59,7 @@ public class GameController : MonoBehaviour
         DataHolders.chip = Resources.Load<GameObject>("Chip");
         DataHolders.mainCanvas = Canvas;
         DataHolders.chipPositionOnBoard = chipPositionOnBoard;
-        DataHolders.controls = Resources.Load<GameObject>("Controls");
+        DataHolders.controls = Instantiate(Resources.Load<GameObject>("Controls"));
         GameObject UIObject = Resources.Load<GameObject>("UIDisplay");
         GameObject ui = Instantiate(UIObject, Canvas);
         DataHolders.uIDisplay = ui.GetComponent<UIDisplay>();
@@ -82,8 +96,8 @@ public class GameController : MonoBehaviour
             //create a new player data from the class to store all the variables we need
             PlayerData playerData = new PlayerData(playerCards, DataHolders.startCash, 0, playerIcons[i], randomNames[i], newPlayerGameObject);
             //make the third player the real player
-            //if (i == 2)
-            //    playerData.isRealPlayer = true;
+            if (i == 2)
+                playerData.isRealPlayer = true;
             //add the data to the player script attached to the player prefab, also pass in the position the cards will fly from
             newPlayer.UpdatePlayerData(playerData, startFlyPosition);
         
@@ -277,6 +291,11 @@ public class GameController : MonoBehaviour
         
         //equality is based on rank, not cards/suits/etc... so, for example, two Jack high straights
         //would be equal even though the cards have different suits.
+    }
+
+    public void ScaleDownMenu()
+    {
+
     }
 
 }

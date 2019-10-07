@@ -14,6 +14,9 @@ public class Controls : MonoBehaviour
     public RaiseUIScript raiseUI;
     public Transform final;
     Vector3 prevLocation;
+    public GameObject clickBlocker;
+    bool isActive;
+    public bool allowClick;
     // Start is called before the first frame update
     void Awake()
     {
@@ -25,19 +28,30 @@ public class Controls : MonoBehaviour
     }
     private void OnEnable()
     {
-      
+      //  cardsHolder.DOMoveY(final.transform.position.y, 1f);
     }
 
     public void ShowCards()
     {
-        cardsHolder.DOMoveY(final.transform.position.y, 1f);
+        cardsHolder.DOMoveY(final.transform.position.y, 1f).OnComplete(() => 
+        {
+            if(allowClick)
+            clickBlocker.SetActive(false);
+        });
+        
     }
     public void HideCards()
     {
-        cardsHolder.DOMoveY(prevLocation.y, 1f);
+        cardsHolder.DOMoveY(prevLocation.y, DataHolders.delaySpeed).OnComplete(()=> { clickBlocker.SetActive(true); });
     }
     public void ToggleCardHolder()
     {
+        if (allowClick) return;
+        isActive = !isActive;
+        if (isActive)
+            ShowCards();
+        else
+            HideCards();
 
     }
     // Update is called once per frame
@@ -61,17 +75,21 @@ public class Controls : MonoBehaviour
                 cardVisual[i].GetComponent<Image>().sprite = playerData.cards[i].front;
                 cardVisual[i].SetActive(true);
             }
-            gameObject.SetActive(true);
+            //gameObject.SetActive(true);
+            allowClick = true;
         }
         else
         {
             Debug.Log("cardVisual.Count: " + cardVisual.Count + "playerData.cards.Count: " + playerData.cards.Count);
         }
+        ShowCards();
     }
     public void Call()
     {
         playerData.Call();
-        Destroy(gameObject);
+        HideCards();
+        allowClick = false;
+        // Destroy(gameObject);
     }
     public void Raise()
     {
@@ -80,7 +98,10 @@ public class Controls : MonoBehaviour
             int val = 0;
             int.TryParse(raiseAmount.text, out val);
             playerData.Raise(val);
-            Destroy(gameObject);
+            // Destroy(gameObject);
+
+            HideCards();
+            allowClick = false;
         }
         else if (string.IsNullOrEmpty(raiseAmount.text))
         {
@@ -94,11 +115,15 @@ public class Controls : MonoBehaviour
     public void Fold()
     {
         playerData.Fold();
-        Destroy(gameObject);
+        HideCards();
+        allowClick = false;
+        //Destroy(gameObject);
     }
     public void AllIn()
     {
         playerData.AllIn();
-        Destroy(gameObject);
+        HideCards();
+        allowClick = false;
+        //Destroy(gameObject);
     }
 }
