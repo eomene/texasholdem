@@ -32,12 +32,19 @@ public class Controls : MonoBehaviour
     public void SetControls(PlayerData playerData)
     {
         this.playerData = playerData;
-        for (int i = 0; i < playerData.cards.Count; i++) 
+        if (cardVisual.Count >= playerData.cards.Count)
         {
-            cardVisual[i].GetComponent<Image>().sprite = playerData.cards[i].front;
-            cardVisual[i].SetActive(true);
+            for (int i = 0; i < playerData.cards.Count; i++)
+            {
+                cardVisual[i].GetComponent<Image>().sprite = playerData.cards[i].front;
+                cardVisual[i].SetActive(true);
+            }
+            gameObject.SetActive(true);
         }
-        gameObject.SetActive(true);
+        else
+        {
+            Debug.Log("cardVisual.Count: " + cardVisual.Count + "playerData.cards.Count: " + playerData.cards.Count);
+        }
     }
     public void Call()
     {
@@ -59,7 +66,7 @@ public class Controls : MonoBehaviour
         }
         else if (!string.IsNullOrEmpty(raiseAmount.text) && int.Parse(raiseAmount.text)<(DataHolders.lastBet * 2))
         {
-            ShowText("Please Enter an amount that is at least double current bet of " + DataHolders.lastBet);
+            ShowText("Please enter an amount that is at least double current bet of " + DataHolders.lastBet);
         }
     }
     public void Fold()

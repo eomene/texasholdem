@@ -13,7 +13,7 @@ public class GameController : MonoBehaviour
     public Transform chipPositionOnBoard;
     public Stack<CardData> deck = new Stack<CardData>();
     List<Transform> playerPositions = new List<Transform>();
-    public List<PlayerData> Players = new List<PlayerData>();
+   // public List<PlayerData> Players = new List<PlayerData>();
     String[] randomNames = new string[] { "Jude", "Fred","Emma","Joe","Chris","Jerry" };
     Sprite[] playerIcons;
     GameObject card;
@@ -75,6 +75,7 @@ public class GameController : MonoBehaviour
             playerCards.Add(deck.Pop());
             //create a new player data from the class to store all the variables we need
             PlayerData playerData = new PlayerData(playerCards, DataHolders.startCash, 0, playerIcons[i], randomNames[i], newPlayerGameObject);
+            //make the third player the real player
             if (i == 2)
                 playerData.isRealPlayer = true;
             //add the data to the player script attached to the player prefab, also pass in the position the cards will fly from
@@ -82,7 +83,6 @@ public class GameController : MonoBehaviour
         
             playerData.playerID = i;
             //add the player to the list of players so we can use it later for gameplay
-            Players.Add(playerData);
             //add the player to the list of players so we can use it later for gameplay in data holder
             DataHolders.players.Add(playerData);
             //add players to the array to go through it
@@ -231,6 +231,8 @@ public class GameController : MonoBehaviour
                 {
                     DataHolders.uIDisplay.centerCards[i].isFilled = true;
 
+                    AddToPlayersCard(playerCards[i]);
+
                     DataHolders.uIDisplay.centerCards[i].img.sprite = playerCards[i].front;
                     //create a dummy card to fly into the screen
                     GameObject dummyCard = Instantiate(DataHolders.flyingCard, startFlyPosition.position, Quaternion.identity, Canvas);
@@ -246,6 +248,7 @@ public class GameController : MonoBehaviour
                     dummyCard.transform.DOScaleX(0, DataHolders.cardFlipSpeed).OnComplete(() =>
                             {
                                 playercard.SetActive(true);
+                                Destroy(dummyCard);
                             });
 
                     }).SetEase(Ease.Linear);//set ease type for movement
@@ -253,8 +256,11 @@ public class GameController : MonoBehaviour
             }
         }
     }
-    //public void Bet()
-    //{
-    //    Players[0].Bet(20);
-    //}
+
+    public void AddToPlayersCard(CardData card)
+    {
+        for (int i = 0; i < DataHolders.players.Count; i++)
+            DataHolders.players[i].cards.Add(card);
+    }
+
 }
