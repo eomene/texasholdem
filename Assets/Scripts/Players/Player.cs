@@ -32,6 +32,9 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public GameObject dummy;
     MoverAbility moverAbility;
     bool hasMoverAbility;
+    bool fillup;
+    bool dontflip;
+    bool dontswap;
     void OnEnable()
     {
         cash = startCash.Value;
@@ -58,7 +61,12 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public void MoveToPlace()
     {
         if (hasMoverAbility && cards.Count > 0)
+        {
+            fillup = true;
+            dontflip = false;
+            dontswap = false;
             moverAbility.Move(cards, new List<Locations>() { dealerPosition, dealerPosition }, playerHandLocations, this);
+        }
     }
     //bet amount
     public void Bet(int amount)
@@ -82,7 +90,9 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         IPokerObject po = chip as IPokerObject;
         //move chip to the place set in the center
         if (hasMoverAbility)
+        {
             moverAbility.Move(new List<IPokerObject>() { po }, new List<Locations>() { chip.startLocation }, new List<Locations>() { chip.endLocation }, chip.parent);
+        }
 
 
         go.transform.DOMove(DataHolders.chipPositionOnBoard.position, DataHolders.delaySpeed).OnComplete(() =>
@@ -167,5 +177,21 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public Transform PokerObject()
     {
         return transform;
+    }
+
+    public bool fillUp()
+    {
+        return fillup;
+    }
+
+    public bool dontFlip()
+    {
+        return dontflip;
+
+    }
+
+    public bool dontSwap()
+    {
+        return dontswap; 
     }
 }

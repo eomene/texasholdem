@@ -17,6 +17,9 @@ public interface IPokerSpriteBack
 }
 public interface IPokerOwner
 {
+    bool fillUp();
+    bool dontFlip();
+    bool dontSwap();
     bool isRealPlayer();
     Transform PokerObject();
 }

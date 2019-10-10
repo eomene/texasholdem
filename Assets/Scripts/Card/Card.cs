@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Card : MonoBehaviour, IPokerObject,IPokerSpriteBack,IPokerSpriteFront,IPokerOwner
+public class Card : MonoBehaviour, IPokerObject,IPokerSpriteBack,IPokerSpriteFront
 {
    // public CardData cardObject;
     public Image View;
@@ -95,4 +95,19 @@ public class Card : MonoBehaviour, IPokerObject,IPokerSpriteBack,IPokerSpriteFro
     {
         return transform;
     }
+
+    //public bool fillUp()
+    //{
+    //    throw new System.NotImplementedException();
+    //}
+
+    //public bool dontFlip()
+    //{
+    //    throw new System.NotImplementedException();
+    //}
+
+    //public bool dontSwap()
+    //{
+    //    throw new System.NotImplementedException();
+    //}
 }

@@ -786,6 +786,7 @@ GameObject:
   - component: {fileID: -8447461212660746857}
   - component: {fileID: 3629143261742242484}
   - component: {fileID: 2578018413097663913}
+  - component: {fileID: 237611189256772365}
   m_Layer: 5
   m_Name: Player
   m_TagString: Untagged
@@ -849,6 +850,7 @@ MonoBehaviour:
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: a5219810216a5454e9bab80f64dbf970, type: 2}
   chipLocation: {fileID: 11400000, guid: 70c8dde5f2a178a43b3e82c35db4d7d6, type: 2}
+  chipObject: {fileID: 0}
   playerIcon: {fileID: 2454426106219705309}
   dealerPosition:
     locationHolder: {fileID: 3707121681434938331}
@@ -904,6 +906,18 @@ MonoBehaviour:
     UseConstant: 1
     ConstantValue: 1
     Variable: {fileID: 0}
+--- !u!114 &237611189256772365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2454426107695017522}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b253e968d1ef8f4a97f06c3011f102b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3707121681434938332
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,9 +5,22 @@ using UnityEngine.UI;
 
 public class SpriteSwaperAbility : MonoBehaviour
 {
-    void SwapSprites(Sprite real,Sprite dummy,Image imageToSwap)
+    public void SwapSprites(IPokerSpriteFront spf, IPokerSpriteBack spb, Image imageToSwap,bool isRealPlayer)
     {
-        
+
+        Sprite sprf = null;
+        Sprite sprb = null;
+
+        if (spf != null)
+            sprf = spf.GetFront();
+        if (spb != null)
+            sprb = spb.GetBack();
+
+        if (isRealPlayer)
+            imageToSwap.sprite = sprf;
+        else
+            imageToSwap.sprite = sprb;
+
     }
 
 }
