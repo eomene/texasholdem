@@ -34,6 +34,10 @@ public abstract class RuntimeSet<T> : ScriptableObject
     {
         Items.Sort();
     }
+    public void Clear()
+    {
+        Items.Clear();
+    }
     public void Shuffle()
     {
         int n = Items.Count;
@@ -46,4 +50,4 @@ public abstract class RuntimeSet<T> : ScriptableObject
             Items[n] = value;
         }
     }
-}
+} 

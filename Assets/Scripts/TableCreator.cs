@@ -8,6 +8,7 @@ public class TableCreator : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        playerPositionsSet.Clear();
         foreach (Transform tr in transform)
             playerPositionsSet.Add(tr);
     }

@@ -27,22 +27,37 @@ public class MoverAbility : MonoBehaviour
                     if (spb != null)
                         sprb = spb.GetBack();
 
-                    Transform parentTransform = parent as Transform;
-                    GameObject dummyObject = Instantiate(objectsToMove[i].GetPokerObject(), parentTransform);
+                    //Transform parentTransform = parent as Transform;
+                   // Debug.Log(parentTransform.name);
+                    GameObject dummyObject = Instantiate(objectsToMove[i].GetPokerObject(), parent.PokerObject());
                     var endObject = endLocations[i];
 
                     dummyObject.transform.localPosition = new Vector2(startLocations[i].location.x, startLocations[i].location.y);
+
+                    CardFlipAbility cfa = GetComponent<CardFlipAbility>();
+
+                    if (cfa != null)
+                        endLocations[i].locationHolder.localScale = new Vector3(0, endLocations[i].locationHolder.localScale.y, endLocations[i].locationHolder.localScale.z);
+
                     dummyObject.transform.DOLocalMove(endLocations[i].location, moveSpeed.Value).OnComplete(() =>
                     {
-                        dummyObject.transform.localScale = Vector3.zero;
-                        if(parent.isRealPlayer())
-                        endObject.locationHolder.GetComponent<Image>().sprite = sprf;
+
+                        if (parent.isRealPlayer())
+                            endObject.locationHolder.GetComponent<Image>().sprite = sprf;
                         else
                             endObject.locationHolder.GetComponent<Image>().sprite = sprb;
+
                         endObject.locationHolder.gameObject.SetActive(true);
                         endObject.isFilled = true;
-                        endObject.locationHolder.localScale = Vector3.one;
-                         Destroy(dummyObject);
+                        if (cfa != null && parent.isRealPlayer())
+                            cfa.FlipCards(dummyObject, endObject.locationHolder.gameObject, parent);
+                        else
+                        {
+                            dummyObject.transform.localScale = Vector3.zero;
+                            endObject.locationHolder.localScale = Vector3.one;
+                            Destroy(dummyObject);
+                        }
+
                     }).SetEase(Ease.Linear);//set ease type for movement
                 }
             }

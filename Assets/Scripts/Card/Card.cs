@@ -90,4 +90,9 @@ public class Card : MonoBehaviour, IPokerObject,IPokerSpriteBack,IPokerSpriteFro
     {
         return isRealPlayerCard;
     }
+
+    public Transform PokerObject()
+    {
+        return transform;
+    }
 }

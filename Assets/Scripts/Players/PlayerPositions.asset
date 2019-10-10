@@ -12,4 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dee18972305f884289893e50c79bc0b, type: 3}
   m_Name: PlayerPositions
   m_EditorClassIdentifier: 
-  Items: []
+  Items:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
