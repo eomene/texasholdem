@@ -9,7 +9,7 @@ using DG.Tweening;
 public class Controls : MonoBehaviour
 {
     private IntReference lastBet;
-    public PlayerData playerData;
+    public PlayerRuntimeSet player;
     public TMP_InputField raiseAmount;
     public List<Card> cards = new List<Card>();
     public Transform cardsHolder;
@@ -21,6 +21,8 @@ public class Controls : MonoBehaviour
     bool isActive;
     public bool allowClick;
     public GameObject dealerPosition;
+    Player playerData;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -46,7 +48,7 @@ public class Controls : MonoBehaviour
     }
     public void HideCards()
     {
-        cardsHolder.DOMoveY(prevLocation.y, DataHolders.delaySpeed).OnComplete(()=> { clickBlocker.SetActive(true); });
+        cardsHolder.DOMoveY(prevLocation.y, 1).OnComplete(()=> { clickBlocker.SetActive(true); });
     }
     public void ToggleCardHolder()
     {
@@ -61,7 +63,7 @@ public class Controls : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
     public void ShowText(string text)
     {
@@ -71,29 +73,29 @@ public class Controls : MonoBehaviour
 
     public void SetControls(Player playerData)
     {
-        //this.playerData = playerData;
-        //if (cardVisual.Count >= playerData.cards.Count)
-        //{
-        //    for (int i = 0; i < playerData.cards.Count; i++)
-        //    {
-        //        cardVisual[i].GetComponent<Image>().sprite = playerData.cards[i].front;
-        //        cardVisual[i].SetActive(true);
-        //    }
-        //    //gameObject.SetActive(true);
-        //    allowClick = true;
-        //}
-        //else
-        //{
-        //    Debug.Log("cardVisual.Count: " + cardVisual.Count + "playerData.cards.Count: " + playerData.cards.Count);
-        //}
+        this.playerData = playerData;
+        if (cardVisual.Count >= playerData.cards.Count)
+        {
+            for (int i = 0; i < playerData.cards.Count; i++)
+            {
+                cardVisual[i].GetComponent<Image>().sprite = (playerData.cards[i] as Card).front;
+                cardVisual[i].SetActive(true);
+            }
+            //gameObject.SetActive(true);
+            allowClick = true;
+        }
+        else
+        {
+            Debug.Log("cardVisual.Count: " + cardVisual.Count + "playerData.cards.Count: " + playerData.cards.Count);
+        }
         //ShowCards();
     }
     public void Call()
     {
-        //playerData.Call();
-        //HideCards();
-        //allowClick = false;
-        // Destroy(gameObject);
+        playerData.Call();
+        HideCards();
+        allowClick = false;
+       // Destroy(gameObject);
     }
     public void Raise()
     {

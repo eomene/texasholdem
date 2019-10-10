@@ -2106,18 +2106,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab378562558b9064a851c6d27fe2b968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerData:
-    cards: []
-    cash: 0
-    currentBet: 0
-    currentBetToTal: 0
-    isTurn: 0
-    isRealPlayer: 0
-    playerIcon: {fileID: 0}
-    playerName: 
-    playerGameObject: {fileID: 0}
-    player: {fileID: 0}
-    playerID: 0
+  player: {fileID: 11400000, guid: b7a6cfc4bc14df7489b4716943082b98, type: 2}
   raiseAmount: {fileID: 632886516059083186}
   cards: []
   cardsHolder: {fileID: 632886514853455286}
@@ -3088,7 +3077,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4367016574874975772
 RectTransform:
   m_ObjectHideFlags: 0

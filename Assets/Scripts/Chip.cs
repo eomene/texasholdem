@@ -6,10 +6,7 @@ using TMPro;
 
 public class Chip : MonoBehaviour,IPokerObject
 {
-    public Locations startLocation;
-    public Locations endLocation;
     public IPokerOwner parent;
-    public ObjectVariable endObject;
     //public ObjectVariable parentObject;
     public int value;
     public Image img;
@@ -19,9 +16,7 @@ public class Chip : MonoBehaviour,IPokerObject
     {
         //incase sprites should be changed with value
         img = GetComponent<Image>();
-        startLocation = new Locations(transform, false);
-        endLocation = new Locations(endObject.Value.transform, false);
-        parent = endObject.Value.GetComponent<IPokerOwner>();
+
     }
 
     // Update is called once per frame

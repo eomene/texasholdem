@@ -6,10 +6,21 @@ using DG.Tweening;
 public class CardFlipAbility : MonoBehaviour
 {
     public FloatReference moveSpeed;
-    public void FlipCards(GameObject dummyObject, GameObject real,IPokerOwner owner)
+    SpriteSwaperAbility swapAbility;
+    bool hasSwapAbility;
+    private void Start()
     {
-        dummyObject.transform.DOScaleX(0, moveSpeed.Value).OnComplete(() =>
+        swapAbility = GetComponent<SpriteSwaperAbility>();
+        if (swapAbility != null)
+            hasSwapAbility = true;
+    }
+    public void FlipCards(GameObject real)
+    {
+        real.transform.DOScaleX(0, moveSpeed.Value).OnComplete(() =>
         {
+            if(hasSwapAbility)
+            swapAbility.SwapSprites(real, true);
+
             real.transform.DOScaleX(1, moveSpeed.Value).OnComplete(() =>
             {
 

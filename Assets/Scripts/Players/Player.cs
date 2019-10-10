@@ -12,7 +12,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public IntReference currentTurn;
     public IntReference gameRound;
     public IntReference totalBet;
-    public ObjectVariable chipLocation;
+    public Chipsparent chipparent;
     public ObjectVariable chipObject;
     public Image playerIcon;
     public Locations dealerPosition;
@@ -21,7 +21,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public TextMeshProUGUI cashDisplay;
     public TextMeshProUGUI currentBetTotalDisplay;
     public IntReference startCash;
-    List<IPokerObject> cards = new List<IPokerObject>();
+    public List<IPokerObject> cards = new List<IPokerObject>();
     public int cash;
     public int currentBetTotal;
     public bool isTurn;
@@ -35,12 +35,21 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     bool fillup;
     bool dontflip;
     bool dontswap;
+    public PlayerRuntimeSet players;
+    public Controls control;
+
     void OnEnable()
     {
         cash = startCash.Value;
         moverAbility = GetComponent<MoverAbility>();
         if (moverAbility != null)
             hasMoverAbility = true;
+
+        players.Add(this);
+    }
+    void OnDisable()
+    {
+        players.Remove(this);
     }
 
     void UpdateTextDisplay()
@@ -52,10 +61,21 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public void UpdatePlayerData(string name,Sprite sprite, List<IPokerObject> cards)
     {
         this.playerName = name;
-        playerNameDisplay.text= name;
+        playerNameDisplay.text = name;
         gameObject.name = name;
         this.playerIcon.sprite = sprite;
         this.cards = cards;
+        foreach(IPokerObject crd in cards)
+        {
+            Transform tr = (crd as Card).transform;
+            tr.SetParent(transform);
+            tr.localScale = Vector3.one;
+        }
+        if (isRealPlayer)
+        {
+            Controls contrl = Instantiate(control).GetComponent<Controls>();
+            contrl.SetControls(this);
+        }
         UpdateTextDisplay();
     }
     public void MoveToPlace()
@@ -71,6 +91,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     //bet amount
     public void Bet(int amount)
     {
+        //Debug.Log("Betting");
         //remove amount from cash and add it to total bet
         cash -= amount;
         //add it to the current bet
@@ -81,37 +102,44 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         totalBet.Variable.ApplyChange(amount);
 
         //create chip that would be displayed
-        GameObject go = Instantiate(chipObject.Value, transform.position, Quaternion.identity, chipLocation.Value.transform);
+        GameObject go = Instantiate(chipObject.Value, transform.position, Quaternion.identity, chipparent.transform);
 
         Chip chip = go.GetComponent<Chip>();
+
+        chip.parent = chipparent;
+
+        go.transform.SetParent(chip.parent.PokerObject());
+
         //set the amount of the ship
+
         chip.SetAmount(amount);
 
         IPokerObject po = chip as IPokerObject;
         //move chip to the place set in the center
         if (hasMoverAbility)
         {
-            moverAbility.Move(new List<IPokerObject>() { po }, new List<Locations>() { chip.startLocation }, new List<Locations>() { chip.endLocation }, chip.parent);
+            moverAbility.Move(new List<IPokerObject>() { po }, new List<Locations>() { chipparent.startLocation }, new List<Locations>() { chipparent.endLocation(playerID + 1) }, chip.parent);
         }
 
 
-        go.transform.DOMove(DataHolders.chipPositionOnBoard.position, DataHolders.delaySpeed).OnComplete(() =>
-        {
-            //update the ui text when the chip has arriced
-            //UpdatePlayerUI();
-            ////either stack chips or delete
-            //if (DataHolders.chipPositionOnBoard.childCount < 4)
-            //    go.transform.SetParent(DataHolders.chipPositionOnBoard);
-            //else
-            //    Destroy(go);
-            ////to go to the next player
-            //Next(DataHolders.currentTurn + 1);
-        });
+        //go.transform.DOMove(DataHolders.chipPositionOnBoard.position, DataHolders.delaySpeed).OnComplete(() =>
+        //{
+        //    //update the ui text when the chip has arriced
+        //    //UpdatePlayerUI();
+        //    ////either stack chips or delete
+        //    //if (DataHolders.chipPositionOnBoard.childCount < 4)
+        //    //    go.transform.SetParent(DataHolders.chipPositionOnBoard);
+        //    //else
+        //    //    Destroy(go);
+        //    ////to go to the next player
+        //    //Next(DataHolders.currentTurn + 1);
+        //});
 
     }
     public void Call()
     {
-        Bet(lastBet.Value);
+       // Bet(lastBet.Value);
+        Bet(10);
     }
     public void Raise(int amount)
     {
@@ -193,5 +221,17 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public bool dontSwap()
     {
         return dontswap; 
+    }
+    public Action action = new Action(finishedMovement);
+
+    public static void finishedMovement()
+    {
+        Debug.Log("finished moving on player");
+    }
+
+    Action IPokerOwner.action()
+    {
+       // Debug.Log("finished moving on player 1" );
+        return action;
     }
 }

@@ -4,12 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-[System.Serializable]
-public class PlayerData
-{
 
-   
-}
 [System.Serializable]
 public class RepeatOccurance
 {
@@ -54,10 +49,14 @@ public class Locations
     }
     public bool isFilled;
 
-    public Locations(Transform locationHolder,bool isFilled)
+    public Locations(Transform locationHolder, Vector2 location, bool isFilled)
     {
         this.locationHolder = locationHolder;
         this.isFilled = isFilled;
+    }
+    public Locations()
+    {
+
     }
 }
 [System.Serializable]

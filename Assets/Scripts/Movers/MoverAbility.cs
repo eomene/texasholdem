@@ -30,28 +30,16 @@ public class MoverAbility : MonoBehaviour
                 if (!endLocations[i].isFilled)
                 {
                     var endObject = endLocations[i];
-                    if (hasSwapAbility && !parent.dontSwap())
-                        swapAbility.SwapSprites(objectsToMove[i] as IPokerSpriteFront, objectsToMove[i] as IPokerSpriteBack, endObject.locationHolder.GetComponent<Image>(), parent.isRealPlayer());
-
-                    if (hasCardFlipAbility && !parent.dontFlip())
-                        endLocations[i].locationHolder.localScale = new Vector3(0, endLocations[i].locationHolder.localScale.y, endLocations[i].locationHolder.localScale.z);
-
-                    GameObject dummyObject = Instantiate(objectsToMove[i].GetPokerObject(), parent.PokerObject());
-                    dummyObject.transform.localPosition = new Vector2(startLocations[i].location.x, startLocations[i].location.y);
-
-                    dummyObject.transform.DOLocalMove(endLocations[i].location, moveSpeed.Value).OnComplete(() =>
+                    var ObjectToMove = objectsToMove[i].GetPokerObject();
+                    ObjectToMove.transform.localPosition = new Vector2(startLocations[i].location.x, startLocations[i].location.y);
+                    ObjectToMove.transform.DOLocalMove(endLocations[i].location, moveSpeed.Value).OnComplete(() =>
                     {
-                        finished();
-                        endObject.locationHolder.gameObject.SetActive(parent.fillUp());
                         endObject.isFilled = parent.fillUp();
+                        if (hasSwapAbility && !parent.dontSwap() && parent.dontFlip())
+                            swapAbility.SwapSprites(ObjectToMove, parent.isRealPlayer());
                         if (hasCardFlipAbility && parent.isRealPlayer() && !parent.dontFlip())
-                            cardFlipAbility.FlipCards(dummyObject, endObject.locationHolder.gameObject, parent);
-                        else
-                        {
-                            dummyObject.transform.localScale = Vector3.zero;
-                            endObject.locationHolder.localScale = Vector3.one;
-                            Destroy(dummyObject);
-                        }
+                            cardFlipAbility.FlipCards(ObjectToMove);
+                        parent.action();
 
                     }).SetEase(Ease.Linear);//set ease type for movement
                 }

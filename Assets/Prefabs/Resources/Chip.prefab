@@ -89,6 +89,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e87812e6d3b268240a0e6a34f2026304, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startLocation:
+    locationHolder: {fileID: 0}
+    isFilled: 0
+  endLocation:
+    locationHolder: {fileID: 0}
+    isFilled: 0
+  endObject: {fileID: 11400000, guid: 70c8dde5f2a178a43b3e82c35db4d7d6, type: 2}
+  value: 0
   img: {fileID: 0}
   amount: {fileID: 5579532368507134865}
 --- !u!1 &5579532368507134879

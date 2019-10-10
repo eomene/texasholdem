@@ -58,6 +58,7 @@ public class PlayerCreator : MonoBehaviour
                 cards = ca.GetCardsFromDeck();
 
             newPlayer.UpdatePlayerData(randomNames[i], playerIcons[UnityEngine.Random.Range(0, playerIcons.Length)], cards);
+            newPlayer.playerID = i;
 
             players.Add(newPlayer.gameObject);
 

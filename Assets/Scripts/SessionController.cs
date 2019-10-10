@@ -25,8 +25,8 @@ public class SessionController : MonoBehaviour
     {
 
         //DataHolders.gameController = this;
-        DataHolders.flyingCard = Resources.Load<GameObject>("FlyingCard");
-        DataHolders.chip = Resources.Load<GameObject>("Chip");
+       // DataHolders.flyingCard = Resources.Load<GameObject>("FlyingCard");
+        //DataHolders.chip = Resources.Load<GameObject>("Chip");
 
         //DataHolders.controls = Instantiate(Resources.Load<GameObject>("Controls"));
         //GameObject UIObject = Resources.Load<GameObject>("UIDisplay");
@@ -53,13 +53,13 @@ public class SessionController : MonoBehaviour
     public IEnumerator FirstPlay()
     {
        // MoveCardsToTable(Players[0].cards);
-        yield return new WaitForSeconds(DataHolders.delaySpeed);
+        yield return new WaitForSeconds(1);
         //bet 20 for first player
        // DataHolders.players[currentTurn.Value].Bet(20);
     }
     public IEnumerator Next(int current)
     {
-        yield return new WaitForSeconds(DataHolders.delaySpeed);
+        yield return new WaitForSeconds(1);
         //if ((current) < DataHolders.players.Count )
         //{
         //    currentTurn.Variable.SetValue(current);

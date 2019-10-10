@@ -23,11 +23,11 @@ public class MenuController : MonoBehaviour
     {
         GameFader.SetActive(true);
         MenuFader.SetActive(true);
-        MenuFader.GetComponent<Image>().DOFade(1, DataHolders.delaySpeed).OnComplete(() =>
+        MenuFader.GetComponent<Image>().DOFade(1, 1).OnComplete(() =>
         {
             MenuFader.SetActive(false);
             MenuFader.transform.parent.gameObject.SetActive(false);
-            GameFader.GetComponent<Image>().DOFade(0, DataHolders.delaySpeed).OnComplete(() =>
+            GameFader.GetComponent<Image>().DOFade(0,1).OnComplete(() =>
             {
                 GameFader.SetActive(false);
                 // StartCoroutine(CreatePlayers());
