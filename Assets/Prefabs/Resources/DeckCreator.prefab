@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &3417138402630561390
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3417138402630561360}
+  - component: {fileID: 3417138402630561361}
+  m_Layer: 0
+  m_Name: DeckCreator
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3417138402630561360
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3417138402630561390}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -685, y: 56.991417, z: -336.39923}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3417138402630561361
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3417138402630561390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3bdac6bd437f5ed4b9d6187c6d0d844d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  deck: {fileID: 3655895244330398115, guid: 0d128e34e32401a44a6632a234f4bf21, type: 3}
+  DiamondsLocation: {fileID: 11400000, guid: db8d8ea0ae039ca46af6ff0c3d6914cf, type: 2}
+  ClubsLocation: {fileID: 11400000, guid: f31922c9bfc903741ae30b1e8865cb72, type: 2}
+  HeartsLocation: {fileID: 11400000, guid: a145592f492760146923b9517687d2de, type: 2}
+  SpadesLocation: {fileID: 11400000, guid: 36cd2a7b52b4b7b4190129c0a26a9698, type: 2}
+  CardsBackLocation: {fileID: 11400000, guid: 9f09a3b74a1863d4d8d1b021bb1285c8, type: 2}
+  Card: {fileID: 11400000, guid: f436edeeb5a15584c9ea706e06a802c3, type: 2}

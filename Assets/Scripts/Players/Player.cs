@@ -28,8 +28,6 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public bool isRealPlayer;
     public string playerName;
     public int playerID;
-    //public GameEvent Event;
-    public GameObject dummy;
     MoverAbility moverAbility;
     bool hasMoverAbility;
     bool fillup;
@@ -39,8 +37,8 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public GameObject control;
     public GameEvent hasPlayed;
     public IntList activePlayers;
+    [HideInInspector]
     public GameObject controller;
-  //  public MoverParent handparent; 
     public IntVariable playerIncrease;
 
     public float movespeed = 1;
@@ -192,10 +190,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     {
         return gameObject;
     }
-    public GameObject GetPokerDummy()
-    {
-        return dummy;
-    }
+
     public Sprite GetFront()
     {
         return playerIcon.sprite; 
