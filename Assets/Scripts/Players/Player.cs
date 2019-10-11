@@ -39,6 +39,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public GameEvent hasPlayed;
     public IntList activePlayers;
     public GameObject controller;
+    public Chipsparent handparent;
     void OnEnable()
     {
         cash = startCash.Value;
@@ -54,7 +55,22 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         if(activePlayers.Value.Contains(playerID))
         activePlayers.Value.Remove(playerID);
     }
-
+    IEnumerator moveCardsToHand(int numberOfCards)
+    {
+        if (hasMoverAbility && cards.Count >= numberOfCards)
+        {
+            for (int i = 0; i < 1; i++)
+            {
+                IPokerObject ob = cards[i];
+                ob.GetPokerObject().transform.SetParent(handparent.parentOfPositions);
+                handparent.dontflip = false;
+                handparent.isForRealPlayer = true;
+                handparent.fillup = true;
+                moverAbility.Move(new List<IPokerObject>() { ob }, new List<Locations>() { handparent.startLocation }, new List<Locations>() { handparent.endLocationsList[i] }, handparent);
+                yield return new WaitForSeconds(1);
+            }
+        }
+    }
     void UpdateTextDisplay()
     {
         cashDisplay.text = cash.ToString();
@@ -86,24 +102,28 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     }
     public void MoveToPlace()
     {
+       // StartCoroutine(moveCardsToHand(2));
         if (hasMoverAbility && cards.Count > 0)
         {
             fillup = true;
             dontflip = false;
             dontswap = false;
-            moverAbility.Move(cards, new List<Locations>() { dealerPosition, dealerPosition }, playerHandLocations, this);
+            for (int i = 0; i < playerHandLocations.Count; i++)
+            {
+                moverAbility.Move(cards, new List<Locations>() { dealerPosition, dealerPosition }, playerHandLocations, this);
+            }
         }
     }
     public void AddToPlayers()
     {
         players.Add(this);
         activePlayers.Value.Add(playerID);
+
         if (activePlayers.Value.Count >= 6)
         {
             currentTurn.Variable.SetValue(-1);
-          //  Debug.Log("Hasraised played from player controller after adding all players");
+            //  Debug.Log("Hasraised played from player controller after adding all players");
             hasPlayed.Raise();
-
         }
     }
     //bet amount
@@ -136,7 +156,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         //move chip to the place set in the center
         if (hasMoverAbility)
         {
-            moverAbility.Move(new List<IPokerObject>() { po }, new List<Locations>() { chipparent.startLocation }, new List<Locations>() { chipparent.endLocation(playerID + 1) }, chip.parent);
+            moverAbility.Move(new List<IPokerObject>() { po }, new List<Locations>() { chipparent.startLocation }, new List<Locations>() { chipparent.endLocationsList[playerID + 1] }, chip.parent);
         }
 
         UpdateTextDisplay();
@@ -244,6 +264,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         return dontswap; 
     }
     public Action action = new Action(finishedMovement);
+
 
     public static void finishedMovement()
     {

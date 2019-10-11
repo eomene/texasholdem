@@ -24,9 +24,14 @@ public class MoverAbility : MonoBehaviour
     public void Move(List<IPokerObject> objectsToMove, List<Locations> startLocations, List<Locations> endLocations,IPokerOwner parent)
     {
         for (int i = 0; i < objectsToMove.Count; i++)
-        {
+        { 
             if (objectsToMove.Count <= endLocations.Count && objectsToMove.Count <= startLocations.Count)
             {
+            //int i = 0;
+            //while (i < objectsToMove.Count && !endLocations[i].isFilled)
+            //{
+            //    i++;
+                Debug.Log(i);
                 if (!endLocations[i].isFilled)
                 {
                     var endObject = endLocations[i];
@@ -38,7 +43,10 @@ public class MoverAbility : MonoBehaviour
                         if (hasSwapAbility && !parent.dontSwap() && parent.dontFlip())
                             swapAbility.SwapSprites(ObjectToMove, parent.isRealPlayer());
                         if (hasCardFlipAbility && parent.isRealPlayer() && !parent.dontFlip())
+                        {
+                            Debug.Log("is flipping");
                             cardFlipAbility.FlipCards(ObjectToMove);
+                        }
                         parent.action();
 
                     }).SetEase(Ease.Linear);//set ease type for movement
