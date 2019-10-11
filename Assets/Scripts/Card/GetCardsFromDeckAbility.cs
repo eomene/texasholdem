@@ -9,9 +9,6 @@ public class GetCardsFromDeckAbility : MonoBehaviour
 
     public List<IPokerObject> GetCardsFromDeck()
     {
-        if (deck.Count() == 0)
-            Debug.Log("No cards in scene");
-            return null;
         //create a new list of player cards
         List<IPokerObject> playerCards = new List<IPokerObject>();
         //add two of the last cards to the stack of card decks
