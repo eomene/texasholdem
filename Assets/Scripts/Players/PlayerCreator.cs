@@ -18,7 +18,7 @@ public class PlayerCreator : MonoBehaviour
     string[] randomNames = new string[] { "Jude", "Fred", "Emma", "Joe", "Chris", "Jerry" };
     bool hasAllPlayers;
     List<IPokerObject> cards = new List<IPokerObject>();
-
+    public Deck deck;
     private void Start()
     {
         StartCoroutine( CreatePlayers());
@@ -54,8 +54,12 @@ public class PlayerCreator : MonoBehaviour
             if (i == 2)
                 newPlayer.isRealPlayer = true;
 
-            if (ca != null)
+            if (ca != null && deck.Count() > 0) 
                 cards = ca.GetCardsFromDeck();
+            else
+            {
+                Debug.Log("there might be no deck in scene");
+            }
 
             newPlayer.UpdatePlayerData(randomNames[i], playerIcons[UnityEngine.Random.Range(0, playerIcons.Length)], cards);
             newPlayer.playerID = i;

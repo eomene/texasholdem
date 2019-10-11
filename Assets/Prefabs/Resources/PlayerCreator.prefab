@@ -57,6 +57,7 @@ MonoBehaviour:
     Variable: {fileID: 11400000, guid: 6e87f697baa55b44ca393de4e4e6aa7f, type: 2}
   playerIconsLocation: {fileID: 11400000, guid: e8e7e24347079af4aa4f3f35ca5fde52,
     type: 2}
+  deck: {fileID: 3655895244330398115, guid: 0d128e34e32401a44a6632a234f4bf21, type: 3}
 --- !u!114 &2021028359311137391
 MonoBehaviour:
   m_ObjectHideFlags: 0
