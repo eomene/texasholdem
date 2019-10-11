@@ -7,7 +7,7 @@ using DG.Tweening;
 
 public class MoverAbility : MonoBehaviour
 {
-    public FloatReference moveSpeed;
+    //public FloatReference moveSpeed;
     SpriteSwaperAbility swapAbility;
     CardFlipAbility cardFlipAbility;
     bool hasCardFlipAbility;
@@ -33,7 +33,7 @@ public class MoverAbility : MonoBehaviour
                         var endObject = endLocations[i];
                         var ObjectToMove = objectsToMove[i].GetPokerObject();
                         ObjectToMove.transform.localPosition = new Vector2(startLocations[i].location.x, startLocations[i].location.y);
-                        ObjectToMove.transform.DOLocalMove(endLocations[i].location, moveSpeed.Value).OnComplete(() =>
+                        ObjectToMove.transform.DOLocalMove(endLocations[i].location, parent.speed()).OnComplete(() =>
                         {
                             endObject.isFilled = parent.fillUp();
                             if (hasSwapAbility && !parent.dontSwap() && parent.dontFlip())

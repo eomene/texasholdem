@@ -4,21 +4,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Chipsparent : MonoBehaviour, IPokerOwner
+public class MoverParent : MonoBehaviour, IPokerOwner
 {
     public Locations startLocation;
-    //public Locations endLocation(int id)
-    //{
-    //    Debug.Log(endLocationsList.Count + "list long");
-    //    return endLocationsList[id];
-    //}
-    //List<Transform> realLocations = new List<Transform>();
     public List<Locations> endLocationsList = new List<Locations>();
     public bool isForRealPlayer;
     public bool fillup = false;
     public bool dontflip = true;
     public bool dontswap = true;
     public Transform parentOfPositions;
+    public float movespeed = 1;
 
     void Awake()
     {
@@ -69,5 +64,10 @@ bool IPokerOwner.isRealPlayer()
     UnityAction IPokerOwner.action()
     {
         return actionReal;
+    }
+
+    public float speed()
+    {
+        return movespeed;
     }
 }

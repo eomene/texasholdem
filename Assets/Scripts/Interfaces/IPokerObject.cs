@@ -25,4 +25,5 @@ public interface IPokerOwner
     bool isRealPlayer();
     Transform PokerObject();
     UnityAction action();
+    float speed();
 }

@@ -250,6 +250,7 @@ MonoBehaviour:
   dontflip: 1
   dontswap: 1
   parentOfPositions: {fileID: 1883545357373808938}
+  movespeed: 0
 --- !u!1 &1777475023785984624
 GameObject:
   m_ObjectHideFlags: 0
@@ -1130,8 +1131,8 @@ MonoBehaviour:
   hasPlayed: {fileID: 11400000, guid: febef52cb7f31de46b9ffaa00a42cebe, type: 2}
   activePlayers: {fileID: 11400000, guid: 4682688ac7deba44f89ada57427016cd, type: 2}
   controller: {fileID: 0}
-  handparent: {fileID: 7001093132629369795}
   playerIncrease: {fileID: 11400000, guid: 2f43f739081fa894099b19d7af1d7077, type: 2}
+  movespeed: 1
 --- !u!114 &3629143261742242484
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1144,10 +1145,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787fa1ac51b50824cb2e6ae80e54a75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed:
-    UseConstant: 0
-    ConstantValue: 0
-    Variable: {fileID: 11400000, guid: 6e87f697baa55b44ca393de4e4e6aa7f, type: 2}
 --- !u!114 &2578018413097663913
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1729,6 +1726,7 @@ MonoBehaviour:
   dontflip: 1
   dontswap: 1
   parentOfPositions: {fileID: 6198816360992909606}
+  movespeed: 0.5
 --- !u!1 &5236508531122884259
 GameObject:
   m_ObjectHideFlags: 0

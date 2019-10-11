@@ -12,7 +12,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public IntReference currentTurn;
     public IntReference gameRound;
     public IntReference totalBet;
-    public Chipsparent chipparent;
+    public MoverParent chipparent;
     public ObjectVariable chipObject;
     public Image playerIcon;
     public Locations dealerPosition;
@@ -40,8 +40,10 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public GameEvent hasPlayed;
     public IntList activePlayers;
     public GameObject controller;
-    public Chipsparent handparent;
+  //  public MoverParent handparent; 
     public IntVariable playerIncrease;
+
+    public float movespeed = 1;
     void OnEnable()
     {
         cash = startCash.Value;
@@ -59,19 +61,19 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     }
     IEnumerator moveCardsToHand(int numberOfCards)
     {
-        if (hasMoverAbility && cards.Count >= numberOfCards)
-        {
-            for (int i = 0; i < 1; i++)
-            {
-                IPokerObject ob = cards[i];
-                ob.GetPokerObject().transform.SetParent(handparent.parentOfPositions);
-                handparent.dontflip = false;
-                handparent.isForRealPlayer = true;
-                handparent.fillup = true;
-                moverAbility.Move(new List<IPokerObject>() { ob }, new List<Locations>() { handparent.startLocation }, new List<Locations>() { handparent.endLocationsList[i] }, handparent);
+        //if (hasMoverAbility && cards.Count >= numberOfCards)
+        //{
+        //    for (int i = 0; i < 1; i++)
+        //    {
+        //        IPokerObject ob = cards[i];
+        //        ob.GetPokerObject().transform.SetParent(handparent.parentOfPositions);
+        //        handparent.dontflip = false;
+        //        handparent.isForRealPlayer = true;
+        //        handparent.fillup = true;
+        //        moverAbility.Move(new List<IPokerObject>() { ob }, new List<Locations>() { handparent.startLocation }, new List<Locations>() { handparent.endLocationsList[i] }, handparent);
                 yield return new WaitForSeconds(1);
-            }
-        }
+        //    }
+        //}
     }
     void UpdateTextDisplay()
     {
@@ -110,6 +112,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
             fillup = false;
             dontflip = false;
             dontswap = false;
+            movespeed = 1f;
             for (int i = 0; i < playerHandLocations.Count; i++)
             {
                 moverAbility.Move(new List<IPokerObject>() { cards[i] }, new List<Locations>() { dealerPosition}, new List<Locations>() { playerHandLocations[i]}, this);
@@ -260,5 +263,10 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         Bet(20);
         yield return new WaitForSeconds(1f);
         hasPlayed.Raise();
+    }
+
+    public float speed()
+    {
+        return movespeed;
     }
 }

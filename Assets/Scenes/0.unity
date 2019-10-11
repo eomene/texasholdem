@@ -309,6 +309,11 @@ MonoBehaviour:
   deck: {fileID: 3655895244330398115, guid: 0d128e34e32401a44a6632a234f4bf21, type: 3}
   uicards: {fileID: 6143772002743940201}
   playerIncrease: {fileID: 11400000, guid: 2f43f739081fa894099b19d7af1d7077, type: 2}
+  delayeBetweenMiddleCard:
+    UseConstant: 0
+    ConstantValue: 0.5
+    Variable: {fileID: 11400000, guid: e5a81b40ad2bf6544b64b22a58af83ed, type: 2}
+  defaultV: 0
 --- !u!4 &303371076
 Transform:
   m_ObjectHideFlags: 0
@@ -336,10 +341,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 787fa1ac51b50824cb2e6ae80e54a75a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed:
-    UseConstant: 1
-    ConstantValue: 1
-    Variable: {fileID: 0}
 --- !u!114 &303371078
 MonoBehaviour:
   m_ObjectHideFlags: 0
