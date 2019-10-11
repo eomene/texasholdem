@@ -51,8 +51,8 @@ public class PlayerCreator : MonoBehaviour
 
             GetCardsFromDeckAbility ca = GetComponent<GetCardsFromDeckAbility>();
 
-            //if (i == 2)
-            //    newPlayer.isRealPlayer = true;
+            if (i == 2)
+                newPlayer.isRealPlayer = true;
 
             if (ca != null)
                 cards = ca.GetCardsFromDeck();
@@ -66,6 +66,7 @@ public class PlayerCreator : MonoBehaviour
 
         }
        // yield return new WaitForSeconds(2);
+
         for (int i = 0; i < players.Count; i++)
         {
             players[i].GetComponent<Player>().MoveToPlace();

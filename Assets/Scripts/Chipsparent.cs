@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Chipsparent : MonoBehaviour, IPokerOwner
 {
@@ -28,10 +29,11 @@ public class Chipsparent : MonoBehaviour, IPokerOwner
 
         }
 
-        
-       // startLocation = new Locations(realLocations[0], realLocations[0].transform.position, false);
-    }
-    bool IPokerOwner.isRealPlayer() 
+        actionReal += finishedMovement;
+
+    // startLocation = new Locations(realLocations[0], realLocations[0].transform.position, false);
+}
+bool IPokerOwner.isRealPlayer() 
     {
         return isForRealPlayer;
     }
@@ -57,16 +59,15 @@ public class Chipsparent : MonoBehaviour, IPokerOwner
         return dontswap;
     }
 
-    public Action action = new Action(finishedMovement);
+    public UnityAction actionReal;
 
     public static void finishedMovement()
     {
         Debug.Log("finished moving on chips parent");
     }
 
-    Action IPokerOwner.action()
+    UnityAction IPokerOwner.action()
     {
-       
-        return action;
+        return actionReal;
     }
 }

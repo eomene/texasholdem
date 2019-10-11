@@ -2107,6 +2107,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab378562558b9064a851c6d27fe2b968, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  lastBet:
+    UseConstant: 0
+    ConstantValue: 0
+    Variable: {fileID: 11400000, guid: 7c74dfff2703d7944b506138bbb90be6, type: 2}
   player: {fileID: 11400000, guid: b7a6cfc4bc14df7489b4716943082b98, type: 2}
   raiseAmount: {fileID: 632886516059083186}
   cards: []
@@ -3487,7 +3491,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:

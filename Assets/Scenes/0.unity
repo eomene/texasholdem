@@ -308,6 +308,7 @@ MonoBehaviour:
   shouldPlay: {fileID: 11400000, guid: d0450ee0cceba3e4b9c69580bda05392, type: 2}
   deck: {fileID: 3655895244330398115, guid: 0d128e34e32401a44a6632a234f4bf21, type: 3}
   uicards: {fileID: 6143772002743940201}
+  playerIncrease: {fileID: 11400000, guid: 2f43f739081fa894099b19d7af1d7077, type: 2}
 --- !u!4 &303371076
 Transform:
   m_ObjectHideFlags: 0
@@ -790,7 +791,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1438760287}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 14.974987, y: 56.991417, z: -336.39923}
+  m_LocalPosition: {x: -685, y: 56.991417, z: -336.39923}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -1328,6 +1329,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Pivot.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6375973540170584323, guid: ac0984138cf439249bdd58a237e52be6,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -30
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ac0984138cf439249bdd58a237e52be6, type: 3}

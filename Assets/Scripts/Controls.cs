@@ -8,7 +8,7 @@ using DG.Tweening;
 
 public class Controls : MonoBehaviour
 {
-    private IntReference lastBet;
+    public IntReference lastBet;
     public PlayerRuntimeSet player;
     public TMP_InputField raiseAmount;
     public List<Card> cards = new List<Card>();
@@ -77,8 +77,9 @@ public class Controls : MonoBehaviour
     }
     public void ShowText(string text)
     {
-        raiseUI.UpdateText(text);
         raiseUI.gameObject.SetActive(true);
+        raiseUI.UpdateText(text);
+
     }
 
     public void SetControls(Player playerData)
@@ -105,41 +106,40 @@ public class Controls : MonoBehaviour
         playerData.Call();
         HideCards();
         allowClick = false;
-       // Destroy(gameObject);
     }
     public void Raise()
     {
-    //    if (!string.IsNullOrEmpty(raiseAmount.text) && int.Parse(raiseAmount.text) >= (lastBet.Value * 2))
-    //    {
-    //        int val = 0;
-    //        int.TryParse(raiseAmount.text, out val);
-    //        playerData.Raise(val);
-    //        // Destroy(gameObject);
+        if (!string.IsNullOrEmpty(raiseAmount.text) && int.Parse(raiseAmount.text) >= (lastBet.Value * 2))
+        {
+            int val = 0;
+            int.TryParse(raiseAmount.text, out val);
+            playerData.Raise(val);
+            // Destroy(gameObject);
 
-    //        HideCards();
-    //        allowClick = false;
-    //    }
-    //    else if (string.IsNullOrEmpty(raiseAmount.text))
-    //    {
-    //        ShowText("Enter amount to raise, It should be at least double current bet of " + lastBet.Value);
-    //    }
-    //    else if (!string.IsNullOrEmpty(raiseAmount.text) && int.Parse(raiseAmount.text)<(lastBet.Value * 2))
-    //    {
-    //        ShowText("Please enter an amount that is at least double current bet of " + lastBet.Value);
-    //    }
+            HideCards();
+            allowClick = false;
+        }
+        else if (string.IsNullOrEmpty(raiseAmount.text))
+        {
+            ShowText("Enter amount to raise, It should be at least double current bet of " + lastBet.Value);
+        }
+        else if (!string.IsNullOrEmpty(raiseAmount.text) && int.Parse(raiseAmount.text) < (lastBet.Value * 2))
+        {
+            ShowText("Please enter an amount that is at least double current bet of " + lastBet.Value);
+        }
     }
     public void Fold()
     {
-    //    playerData.Fold();
-    //    HideCards();
-    //    allowClick = false;
-    //    //Destroy(gameObject);
+        playerData.Fold();
+        HideCards();
+        allowClick = false;
+        //Destroy(gameObject);
     }
     public void AllIn()
     {
-        //playerData.AllIn();
-        //HideCards();
-        //allowClick = false;
+        playerData.AllIn();
+        HideCards();
+        allowClick = false;
         //Destroy(gameObject);
     }
 }

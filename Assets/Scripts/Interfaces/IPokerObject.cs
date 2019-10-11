@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public interface IPokerObject
 {
@@ -23,5 +24,5 @@ public interface IPokerOwner
     bool dontSwap();
     bool isRealPlayer();
     Transform PokerObject();
-    Action action();
+    UnityAction action();
 }

@@ -1131,6 +1131,7 @@ MonoBehaviour:
   activePlayers: {fileID: 11400000, guid: 4682688ac7deba44f89ada57427016cd, type: 2}
   controller: {fileID: 0}
   handparent: {fileID: 7001093132629369795}
+  playerIncrease: {fileID: 11400000, guid: 2f43f739081fa894099b19d7af1d7077, type: 2}
 --- !u!114 &3629143261742242484
 MonoBehaviour:
   m_ObjectHideFlags: 0

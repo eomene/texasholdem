@@ -7,12 +7,6 @@ using DG.Tweening;
 using System.Linq;
 using UnityEngine.Events;
 
-public class IntEvent : UnityEvent<int>
-{
-
-}
-
-
 public class SessionController : MonoBehaviour
 {
     public int numberOfPlayers;
@@ -27,8 +21,10 @@ public class SessionController : MonoBehaviour
     public Deck deck;
     IPokerOwner parent;
     public Chipsparent uicards;
-
+   // int nextPlayer = -1;
     List<IPokerObject> dealercards = new List<IPokerObject>();
+    public IntVariable playerIncrease;
+    bool moveForward = true;
     private void Awake()
     {
         moverAbility = GetComponent<MoverAbility>();
@@ -43,116 +39,92 @@ public class SessionController : MonoBehaviour
         totalBet.Variable.SetValue(0);
         gameRound.Variable.SetValue(0);
         lastBet.Variable.SetValue(0);
-
-
-    }
-
-    private void Update()
-    {
-        //if(players.Count() == numberOfPlayers)
-        //{
-        //    Debug.Log("all players avaialble");
-        //    numberOfPlayers = 0;
-        //    currentTurn.Variable.SetValue(1);
-        //}
-        //if (currentTurn.Value >= 7)
-        //{
-        //    currentTurn.Variable.SetValue(1);
-        //}
-    }
-
-    public void NextPlayer()
-    {
-
     }
     IEnumerator getCards(int numberOfCards)
     {
         for (int i = 0; i < numberOfCards; i++)
         {
             IPokerObject ob = deck.GetLast();
+            dealercards.Add(ob);
             deck.RemoveLast();
             ob.GetPokerObject().transform.SetParent(uicards.parentOfPositions);
+        }
+
+        for (int i = 0; i < dealercards.Count; i++)
+        {
             if (hasMoverAbility)
             {
                 (parent as Chipsparent).dontflip = false;
                 (parent as Chipsparent).isForRealPlayer = true;
                 (parent as Chipsparent).fillup = true;
-                moverAbility.Move(new List<IPokerObject>() { ob }, new List<Locations>() { uicards.startLocation }, new List<Locations>() { uicards.endLocationsList[i + 1] }, parent);
+                moverAbility.Move(new List<IPokerObject>() { dealercards[i] }, new List<Locations>() { uicards.startLocation }, new List<Locations>() { uicards.endLocationsList[i + 1] }, parent);
             }
-            yield return new WaitForSeconds(1);
+            yield return new WaitForSeconds(0.5f);
         }
+        float t = 0.5f * dealercards.Count;
+        yield return new WaitForSeconds(t);
+        moveForward = true;
+        currentTurn.Variable.SetValue(activePlayers.Value[playerIncrease.Value]);
+        shouldPlay.Raise();
     }
+
     public void HasPlayed()
     {
-        StartCoroutine(getCards(3));
+        Debug.Log("has played");
+        playerIncrease.Value = playerIncrease.Value + 1;
+        if (playerIncrease.Value < activePlayers.Value.Count)
+        {
+            //if (moveForward)
+            //{
+             //   Debug.Log("Next Index: " + playerIncrease.Value + "next id" + activePlayers.Value[playerIncrease.Value]);
+                currentTurn.Variable.SetValue(activePlayers.Value[playerIncrease.Value]);
+                shouldPlay.Raise();
+           // }
+        }
+        else
+        {
+          // moveForward = false;
+            playerIncrease.Value = 0;
+            gameRound.Variable.ApplyChange(1);
+            if (gameRound.Value == 1)
+                StartCoroutine(getCards(3));
+            else if (gameRound.Value == 2)
+                StartCoroutine(getCards(1));
+            else if (gameRound.Value == 3)
+                StartCoroutine(getCards(1));
+            else if (gameRound.Value == 4)
+                GameOver();
+        }
 
-        //Debug.Log("Hasraised subscribed event played from session controller");
-        // int nextPlayer = currentTurn.Value + 1;
-        // while (!activePlayers.Value.Contains(nextPlayer))
-        // {
-        //     nextPlayer++;
-        //     if (nextPlayer >= 5)
-        //     {
-        //         gameRound.Variable.ApplyChange(1);
-        //         nextPlayer = 0;
-        //     }
-        // }
 
 
-        //     if (gameRound.Value == 1)
-        //     {
 
-        //     //add three of the last cards to the stack of card decks
-        //     for (int i = 0; i < 3; i++) 
-        //         dealercards.Add(deck.GetLast());
 
-        //     if (hasMoverAbility)
-        //     {
-        //         Debug.Log("moving card with ability");
-        //         moverAbility.Move(dealercards, uicards.startLocations, uicards.endLocations, parent);
-        //     }
-        //     }
-        // else if (gameRound.Value == 2)
-        //     {
-        //         //List<CardData> dealercards = new List<CardData>();
-        //         //add one of the last cards to the stack of card decks
-        //         //DataHolders.dealerCards.Add(deck.Pop());
-        //         //MoveCardsToTable(DataHolders.dealerCards);
-        //     }
-        //     else if (gameRound.Value == 3)
-        //     {
-        //         // List<CardData> dealercards = new List<CardData>();
-        //         //add one of the last cards to the stack of card decks
-        //         //DataHolders.dealerCards.Add(deck.Pop());
-        //         //MoveCardsToTable(DataHolders.dealerCards);
-        //     }
-        //     else if (gameRound.Value == 4)
-        //     {
-        //         GameOver();
-        //         //end game logic
-
-        //     }
-
-        // currentTurn.Variable.SetValue(nextPlayer);
-        //// Debug.Log("Raised has Shouldplay from session controller");
-        // shouldPlay.Raise();
+        //while (!activePlayers.Value.Contains(nextPlayer) && gameRound.Variable.Value < 4) 
+        //{
+        //    nextPlayer++;
+        //    if (nextPlayer >= activePlayers.Value.Count - 1) 
+        //    {
+        //        moveForward = false;
+        //        nextPlayer = 0;
+        //        gameRound.Variable.ApplyChange(1);
+        //        if (gameRound.Value == 1)
+        //            StartCoroutine(getCards(3));
+        //        else if (gameRound.Value == 2)
+        //            StartCoroutine(getCards(1));
+        //        else if (gameRound.Value == 3)
+        //            StartCoroutine(getCards(1));
+        //        else if (gameRound.Value == 4)
+        //            GameOver();
+        //    }
+        //}
+        //if (moveForward)
+        //{
+        //    Debug.Log("Next Index: " + nextPlayer + "next id" + activePlayers.Value[nextPlayer]);
+        //    currentTurn.Variable.SetValue(activePlayers.Value[nextPlayer]);
+        //    shouldPlay.Raise();
+        //}
     }
-    public IEnumerator FirstPlay()
-    {
-       // MoveCardsToTable(Players[0].cards);
-        yield return new WaitForSeconds(1);
-        //bet 20 for first player
-       // DataHolders.players[currentTurn.Value].Bet(20);
-    }
-    public IEnumerator Next(int current)
-    {
-        yield return new WaitForSeconds(1);
-   
-
-    }
-
-
-
 
     public void GameOver()
     {
@@ -162,9 +134,5 @@ public class SessionController : MonoBehaviour
         //would be equal even though the cards have different suits.
     }
 
-    public void ScaleDownMenu()
-    {
-
-    }
 
 }

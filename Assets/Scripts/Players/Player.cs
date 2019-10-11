@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using TMPro;
 using System;
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public IntList activePlayers;
     public GameObject controller;
     public Chipsparent handparent;
+    public IntVariable playerIncrease;
     void OnEnable()
     {
         cash = startCash.Value;
@@ -47,7 +49,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         if (moverAbility != null)
             hasMoverAbility = true;
 
-        
+        actionReal += finishedMovement;
     }
     void OnDisable()
     {
@@ -105,13 +107,13 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
        // StartCoroutine(moveCardsToHand(2));
         if (hasMoverAbility && cards.Count > 0)
         {
-            fillup = true;
+            fillup = false;
             dontflip = false;
             dontswap = false;
             for (int i = 0; i < playerHandLocations.Count; i++)
             {
-                moverAbility.Move(cards, new List<Locations>() { dealerPosition, dealerPosition }, playerHandLocations, this);
-            }
+                moverAbility.Move(new List<IPokerObject>() { cards[i] }, new List<Locations>() { dealerPosition}, new List<Locations>() { playerHandLocations[i]}, this);
+           }
         }
     }
     public void AddToPlayers()
@@ -122,6 +124,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         if (activePlayers.Value.Count >= 6)
         {
             currentTurn.Variable.SetValue(-1);
+            playerIncrease.Value = -1;
             //  Debug.Log("Hasraised played from player controller after adding all players");
             hasPlayed.Raise();
         }
@@ -139,6 +142,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
 
         totalBet.Variable.ApplyChange(amount);
 
+       // playerIncrease.Value += 1;
         //create chip that would be displayed
         GameObject go = Instantiate(chipObject.Value, transform.position, Quaternion.identity, chipparent.transform);
 
@@ -160,20 +164,6 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         }
 
         UpdateTextDisplay();
-       // Next(DataHolders.currentTurn + 1);
-
-        //go.transform.DOMove(DataHolders.chipPositionOnBoard.position, DataHolders.delaySpeed).OnComplete(() =>
-        //{
-        //    //update the ui text when the chip has arriced
-        //    //UpdatePlayerUI();
-        //    ////either stack chips or delete
-        //    //if (DataHolders.chipPositionOnBoard.childCount < 4)
-        //    //    go.transform.SetParent(DataHolders.chipPositionOnBoard);
-        //    //else
-        //    //    Destroy(go);
-        //    ////to go to the next player
-        //    //Next(DataHolders.currentTurn + 1);
-        //});
 
     }
     public void Call()
@@ -186,39 +176,13 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     }
     public void Fold()
     {
-        //remove player
-       // DataHolders.currentPlayers.Remove(playerData.playerID);
-        //DataHolders.players.Remove(playerData);
-        //DataHolders.foldedPlayers.Add(playerData);
-        ////pass same id, since player has been removed from the list, to prevent skippig previous next player
-        //Next(DataHolders.currentTurn);
+        if(activePlayers.Value.Contains(playerID))
+        activePlayers.Value.Remove(playerID);
+        playerIncrease.Value -= 1;
     }
     public void AllIn()
     {
        Bet(cash);
-    }
-    public void setToCurrent()
-    {
-       //if(playerData.isRealPlayer)
-       // {
-       //     Controls control = DataHolders.controls.GetComponent<Controls>();
-       //     control.SetControls(playerData);
-       // }
-       //else
-       // {
-       //     StartCoroutine(delayAIPlay());
-       // }
-    }
-    public void Next(int current)
-    {
-
-        GetComponent<GameEventListener>().OnEventRaised();
-      //  DataHolders.gameController.StartCoroutine(DataHolders.gameController.Next(current));
-    }
-    IEnumerator delayAIPlay()
-    {
-        yield return new WaitForSeconds(1f);
-        Call();
     }
 
     public GameObject GetPokerObject()
@@ -231,13 +195,12 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     }
     public Sprite GetFront()
     {
-        return playerIcon.sprite; ;
+        return playerIcon.sprite; 
     }
     public Sprite GetBack()
     {
         return playerIcon.sprite; ;
     }
-
     bool IPokerOwner.isRealPlayer()
     {
         return isRealPlayer;
@@ -256,46 +219,30 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public bool dontFlip()
     {
         return dontflip;
-
     }
 
     public bool dontSwap()
     {
         return dontswap; 
     }
-    public Action action = new Action(finishedMovement);
-
-
     public static void finishedMovement()
     {
-        Debug.Log("finished moving on player");
+        Debug.Log("finished moving on chips parent");
     }
-
-    Action IPokerOwner.action()
+    public UnityAction actionReal;
+    UnityAction IPokerOwner.action()
     {
-       // Debug.Log("finished moving on player 1" );
-        return action;
+        return actionReal;
     }
 
-    void Update()
-    {
-
-    }
     public void ShouldPlay()
     {
-        // Debug.Log("should play played from player controller");
-
         if (currentTurn == playerID)
         {
             if (!isRealPlayer)
-            {
                 StartCoroutine(delayBet());
-            }
             else
-            {
                 controller.SetActive(true);
-                //showControl();
-            }
         }
     }
     void showControl()
@@ -305,15 +252,9 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     }
     public void RealPlayerHasPlayed()
     {
-        //Debug.Log("already called");
-        //StartCoroutine(delayBetPlayer());
         hasPlayed.Raise();
     }
-    IEnumerator delayBetPlayer()
-    {
-        yield return new WaitForSeconds(1f);
-      
-    }
+
     IEnumerator delayBet()
     {
         Bet(20);
