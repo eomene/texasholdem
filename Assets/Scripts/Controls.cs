@@ -22,6 +22,7 @@ public class Controls : MonoBehaviour
     public bool allowClick;
     public GameObject dealerPosition;
     Player playerData;
+    public GameObject controller;
 
     // Start is called before the first frame update
     void Awake()
@@ -34,28 +35,37 @@ public class Controls : MonoBehaviour
     }
     private void OnEnable()
     {
-      //  cardsHolder.DOMoveY(final.transform.position.y, 1f);
+        //  cardsHolder.DOMoveY(final.transform.position.y, 1f);
+       // ShowCards(true);
     }
 
-    public void ShowCards()
+    public void ShowCards(bool allowClick)
     {
+        this.allowClick = allowClick;
+       // Debug.Log("Is real player, waiting fr input");
         cardsHolder.DOMoveY(final.transform.position.y, 1f).OnComplete(() => 
         {
-            if(allowClick)
-            clickBlocker.SetActive(false);
+          //  Debug.Log("Is real player, finished moving up");
+            clickBlocker.SetActive(!allowClick);
         });
         
     }
     public void HideCards()
     {
-        cardsHolder.DOMoveY(prevLocation.y, 1).OnComplete(()=> { clickBlocker.SetActive(true); });
+        clickBlocker.SetActive(true);
+        cardsHolder.DOMoveY(prevLocation.y, 1).OnComplete(()=> 
+        {
+          
+            playerData.RealPlayerHasPlayed();
+            controller.SetActive(false);
+        });
     }
     public void ToggleCardHolder()
     {
         if (allowClick) return;
         isActive = !isActive;
         if (isActive)
-            ShowCards();
+            ShowCards(false);
         else
             HideCards();
 

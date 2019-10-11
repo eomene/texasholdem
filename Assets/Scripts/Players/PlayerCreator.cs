@@ -69,6 +69,7 @@ public class PlayerCreator : MonoBehaviour
         {
             players[i].GetComponent<Player>().MoveToPlace();
             yield return new WaitForSeconds(delaySpeed.Value);
+            players[i].GetComponent<Player>().AddToPlayers();
         }
     }
 

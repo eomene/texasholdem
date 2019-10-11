@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using DG.Tweening;
 using System;
 
 public class Player : MonoBehaviour, IPokerObject,IPokerOwner
@@ -36,8 +35,10 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     bool dontflip;
     bool dontswap;
     public PlayerRuntimeSet players;
-    public Controls control;
-
+    public GameObject control;
+    public GameEvent hasPlayed;
+    public IntList activePlayers;
+    public GameObject controller;
     void OnEnable()
     {
         cash = startCash.Value;
@@ -45,11 +46,13 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         if (moverAbility != null)
             hasMoverAbility = true;
 
-        players.Add(this);
+        
     }
     void OnDisable()
     {
         players.Remove(this);
+        if(activePlayers.Value.Contains(playerID))
+        activePlayers.Value.Remove(playerID);
     }
 
     void UpdateTextDisplay()
@@ -73,8 +76,11 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         }
         if (isRealPlayer)
         {
-            Controls contrl = Instantiate(control).GetComponent<Controls>();
+            GameObject obj = Instantiate(control);
+            Controls contrl = obj.GetComponent<Controls>();
             contrl.SetControls(this);
+            controller = contrl.controller;
+          //  contrl.ShowCards(true);
         }
         UpdateTextDisplay();
     }
@@ -86,6 +92,18 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
             dontflip = false;
             dontswap = false;
             moverAbility.Move(cards, new List<Locations>() { dealerPosition, dealerPosition }, playerHandLocations, this);
+        }
+    }
+    public void AddToPlayers()
+    {
+        players.Add(this);
+        activePlayers.Value.Add(playerID);
+        if (activePlayers.Value.Count >= 6)
+        {
+            currentTurn.Variable.SetValue(-1);
+          //  Debug.Log("Hasraised played from player controller after adding all players");
+            hasPlayed.Raise();
+
         }
     }
     //bet amount
@@ -121,6 +139,8 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
             moverAbility.Move(new List<IPokerObject>() { po }, new List<Locations>() { chipparent.startLocation }, new List<Locations>() { chipparent.endLocation(playerID + 1) }, chip.parent);
         }
 
+        UpdateTextDisplay();
+       // Next(DataHolders.currentTurn + 1);
 
         //go.transform.DOMove(DataHolders.chipPositionOnBoard.position, DataHolders.delaySpeed).OnComplete(() =>
         //{
@@ -138,8 +158,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     }
     public void Call()
     {
-       // Bet(lastBet.Value);
-        Bet(10);
+       Bet(lastBet.Value);
     }
     public void Raise(int amount)
     {
@@ -172,6 +191,8 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     }
     public void Next(int current)
     {
+
+        GetComponent<GameEventListener>().OnEventRaised();
       //  DataHolders.gameController.StartCoroutine(DataHolders.gameController.Next(current));
     }
     IEnumerator delayAIPlay()
@@ -233,5 +254,49 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     {
        // Debug.Log("finished moving on player 1" );
         return action;
+    }
+
+    void Update()
+    {
+
+    }
+    public void ShouldPlay()
+    {
+        // Debug.Log("should play played from player controller");
+
+        if (currentTurn == playerID)
+        {
+            if (!isRealPlayer)
+            {
+                StartCoroutine(delayBet());
+            }
+            else
+            {
+                controller.SetActive(true);
+                //showControl();
+            }
+        }
+    }
+    void showControl()
+    {
+        Controls contrl = control.GetComponent<Controls>();
+        contrl.ShowCards(true);
+    }
+    public void RealPlayerHasPlayed()
+    {
+        //Debug.Log("already called");
+        //StartCoroutine(delayBetPlayer());
+        hasPlayed.Raise();
+    }
+    IEnumerator delayBetPlayer()
+    {
+        yield return new WaitForSeconds(1f);
+      
+    }
+    IEnumerator delayBet()
+    {
+        Bet(20);
+        yield return new WaitForSeconds(1f);
+        hasPlayed.Raise();
     }
 }

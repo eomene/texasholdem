@@ -6,50 +6,63 @@ using UnityEngine.UI;
 using DG.Tweening;
 using System.Linq;
 using UnityEngine.Events;
-using RoboRyanTron.Unite2017.Variables;
+
+public class IntEvent : UnityEvent<int>
+{
+
+}
+
 
 public class SessionController : MonoBehaviour
 {
+    public int numberOfPlayers;
     public IntReference lastBet ;
     public IntReference currentTurn ;
     public IntReference totalBet ;
     public IntReference gameRound ;
-
-    public static UnityEvent onPlayerTurnUpdated = new UnityEvent();
-    public static UnityEvent onRoundUpdated = new UnityEvent();
-    public static UnityEvent onTotalBetUpdated = new UnityEvent();
-    public static UnityEvent onLastBetUpdated = new UnityEvent();
-
-
-    void Init()
+    public IntList activePlayers;
+    public GameEvent shouldPlay;
+    void Start()
     {
-
-        //DataHolders.gameController = this;
-       // DataHolders.flyingCard = Resources.Load<GameObject>("FlyingCard");
-        //DataHolders.chip = Resources.Load<GameObject>("Chip");
-
-        //DataHolders.controls = Instantiate(Resources.Load<GameObject>("Controls"));
-        //GameObject UIObject = Resources.Load<GameObject>("UIDisplay");
-        //GameObject ui = Instantiate(UIObject, Canvas);
-        //DataHolders.uIDisplay = ui.GetComponent<UIDisplay>();
-
         currentTurn.Variable.SetValue(0);
         totalBet.Variable.SetValue(0);
         gameRound.Variable.SetValue(0);
         lastBet.Variable.SetValue(0);
-
-        
     }
 
- 
-
-   
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        //if(players.Count() == numberOfPlayers)
+        //{
+        //    Debug.Log("all players avaialble");
+        //    numberOfPlayers = 0;
+        //    currentTurn.Variable.SetValue(1);
+        //}
+        //if (currentTurn.Value >= 7)
+        //{
+        //    currentTurn.Variable.SetValue(1);
+        //}
     }
 
+    public void NextPlayer()
+    {
+
+    }
+
+    public void HasPlayed()
+    {
+        //Debug.Log("Hasraised subscribed event played from session controller");
+        int nextPlayer = currentTurn.Value + 1;
+        while (!activePlayers.Value.Contains(nextPlayer))
+        {
+            nextPlayer++;
+            if (nextPlayer >= 5)
+                nextPlayer = 0;
+        }
+        currentTurn.Variable.SetValue(nextPlayer);
+       // Debug.Log("Raised has Shouldplay from session controller");
+        shouldPlay.Raise();
+    }
     public IEnumerator FirstPlay()
     {
        // MoveCardsToTable(Players[0].cards);
