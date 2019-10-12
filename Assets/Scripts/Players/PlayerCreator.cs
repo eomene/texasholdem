@@ -25,6 +25,7 @@ public class PlayerCreator : MonoBehaviour, IPlayerCreator
     List<IPokerObject> cards = new List<IPokerObject>();
     public Deck deck;
     IDeck realDeck;
+    int maxPlayerCards = 2;
     private void Awake()
     {
         realDeck = deck;
@@ -55,7 +56,7 @@ public class PlayerCreator : MonoBehaviour, IPlayerCreator
                 newPlayer.isRealPlayer = true;
 
             if (ca != null && realDeck.Count() > 0)
-                cards = ca.GetCardsFromDeck();
+                cards = ca.GetCardsFromDeck(maxPlayerCards);
             else
             {
                 Debug.Log("there might be no deck in scene");

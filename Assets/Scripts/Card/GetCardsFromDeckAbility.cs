@@ -4,27 +4,33 @@ using UnityEngine;
 
 public class GetCardsFromDeckAbility : MonoBehaviour
 {
+    GetCardsFromDeckAbilityInternal getCardsFromDeckAbilityInternal;
     public Deck deck;
-    public IDeck realDeck;
     public FloatReference delaySpeed;
 
-    public List<IPokerObject> GetCardsFromDeck()
+    private void Awake()
     {
-        realDeck = deck;
+        getCardsFromDeckAbilityInternal = new GetCardsFromDeckAbilityInternal();
+    }
+    public List<IPokerObject> GetCardsFromDeck(int cardsNeeded)
+    {
+        return getCardsFromDeckAbilityInternal.GetCardsFromDeck(deck, cardsNeeded);
+    }
+}
+public class GetCardsFromDeckAbilityInternal
+{
+    public List<IPokerObject> GetCardsFromDeck(IDeck realDeck, int cardsNeeded)
+    {
         //create a new list of player cards
         List<IPokerObject> playerCards = new List<IPokerObject>();
-        //add two of the last cards to the stack of card decks
-        Card crd = realDeck.GetLast();
-        crd.alreadyPoped = true;
-        playerCards.Add(crd);
-        realDeck.RemoveLast();
-        //next
-        crd = realDeck.GetLast();
-        crd.alreadyPoped = true;
-        playerCards.Add(crd);
-        realDeck.RemoveLast();
-        //Debug.Log(crd.suitEnum.ToString() + "/" + crd.cardEnum.ToString()+" //" + deck.Count().ToString());
-        //realDeck.Count();
+
+        for (int i = 0; i < cardsNeeded; i++)
+        {
+            Card crd = realDeck.GetLast();
+            crd.alreadyPoped = true;
+            playerCards.Add(crd);
+            realDeck.RemoveLast();
+        }
         return playerCards;
     }
 }
