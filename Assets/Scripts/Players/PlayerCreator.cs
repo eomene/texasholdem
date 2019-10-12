@@ -3,7 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerCreator : MonoBehaviour
+public interface IPlayerCreator
+{
+    IEnumerator CreatePlayers();
+}
+
+public class PlayerCreator : MonoBehaviour, IPlayerCreator
 {
     public IntReference maxNumberOfPlayers;
     int numberOfPlayers;
@@ -19,21 +24,16 @@ public class PlayerCreator : MonoBehaviour
     bool hasAllPlayers;
     List<IPokerObject> cards = new List<IPokerObject>();
     public Deck deck;
+    IDeck realDeck;
+    private void Awake()
+    {
+        realDeck = deck;
+    }
     private void Start()
     {
-        StartCoroutine( CreatePlayers());
+        StartCoroutine(CreatePlayers());
     }
 
-    void GivePlayersCards()
-    {
-
-
-
-
-    }
-    public void Update()
-    {
-    }
     public IEnumerator CreatePlayers()
     {
         for (int i = 0; i < playerPositions.Items.Count; i++)
@@ -54,7 +54,7 @@ public class PlayerCreator : MonoBehaviour
             if (i == 2)
                 newPlayer.isRealPlayer = true;
 
-            if (ca != null && deck.Count() > 0) 
+            if (ca != null && realDeck.Count() > 0)
                 cards = ca.GetCardsFromDeck();
             else
             {
@@ -66,10 +66,10 @@ public class PlayerCreator : MonoBehaviour
 
             players.Add(newPlayer.gameObject);
 
-   
+
 
         }
-       // yield return new WaitForSeconds(2);
+        // yield return new WaitForSeconds(2);
 
         for (int i = 0; i < players.Count; i++)
         {

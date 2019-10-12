@@ -6,24 +6,24 @@ using UnityEngine.Events;
 
 public interface IPokerObject
 {
-    GameObject GetPokerObject();
+    GameObject GetPokerObject { get;}
 }
 public interface IPokerSpriteFront
 { 
-    Sprite GetFront();
+    Sprite GetFront { get; }
 }
 
 public interface IPokerSpriteBack
 {
-    Sprite GetBack();
+    Sprite GetBack { get;  }
 }
 public interface IPokerOwner
 {
-    bool fillUp();
-    bool dontFlip();
-    bool dontSwap();
-    bool isRealPlayer();
-    Transform PokerObject();
-    UnityAction action();
-    float speed();
+    bool fillUp { get; set; }
+    bool dontFlip { get; set; }
+    bool dontSwap { get; set; }
+    bool isRealPlayer { get; set; }
+    Transform PokerObject { get; }
+    UnityAction action { get; set; }
+    float speed { get; set; }
 }

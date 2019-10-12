@@ -4,14 +4,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MoverParent : MonoBehaviour, IPokerOwner
+public interface IMoverParent
+{
+    UnityAction action { get; set; }
+    bool dontFlip { get; set; }
+    bool dontSwap { get; set; }
+    bool fillUp { get; set; }
+    bool isRealPlayer { get; set; }
+    Transform PokerObject { get; }
+    float speed { get; set; }
+
+    Transform parentOfPositionsInterface();
+
+}
+
+public class MoverParent : MonoBehaviour, IPokerOwner, IMoverParent
 {
     public Locations startLocation;
     public List<Locations> endLocationsList = new List<Locations>();
-    public bool isForRealPlayer;
-    public bool fillup = false;
-    public bool dontflip = true;
-    public bool dontswap = true;
     public Transform parentOfPositions;
     public float movespeed = 1;
 
@@ -24,50 +34,19 @@ public class MoverParent : MonoBehaviour, IPokerOwner
 
         }
 
-        actionReal += finishedMovement;
-
-    // startLocation = new Locations(realLocations[0], realLocations[0].transform.position, false);
-}
-bool IPokerOwner.isRealPlayer() 
-    {
-        return isForRealPlayer;
     }
-
-    public Transform PokerObject()
+    public Transform parentOfPositionsInterface()
     {
-        return transform;
-    }
-
-    public bool fillUp()
-    {
-        return fillup; 
-    }
-
-    public bool dontFlip()
-    {
-        return dontflip;
-
-    }
-
-    public bool dontSwap()
-    {
-        return dontswap;
+        return parentOfPositions;
     }
 
     public UnityAction actionReal;
+    public bool fillUp { get; set; }
+    public bool dontFlip { get; set; }
+    public bool dontSwap { get; set; }
+    public bool isRealPlayer { get; set; }
+    public Transform PokerObject { get { return transform; } }
+    public UnityAction action { get; set; }
+    public float speed { get { return movespeed; } set { movespeed = value; } }
 
-    public static void finishedMovement()
-    {
-        Debug.Log("finished moving on chips parent");
-    }
-
-    UnityAction IPokerOwner.action()
-    {
-        return actionReal;
-    }
-
-    public float speed()
-    {
-        return movespeed;
-    }
 }

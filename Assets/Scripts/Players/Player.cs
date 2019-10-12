@@ -6,7 +6,29 @@ using UnityEngine.UI;
 using TMPro;
 using System;
 
-public class Player : MonoBehaviour, IPokerObject,IPokerOwner
+public interface IPlayer
+{
+    UnityAction action { get; set; }
+    bool dontFlip { get; set; }
+    bool dontSwap { get; set; }
+    bool fillUp { get; set; }
+    GameObject GetPokerObject { get; }
+    Transform PokerObject { get; }
+    float speed { get; }
+
+    void AddToPlayers();
+    void AllIn();
+    void Bet(int amount);
+    void Call();
+    void Fold();
+    void MoveToPlace();
+    void Raise(int amount);
+    void RealPlayerHasPlayed();
+    void ShouldPlay();
+    void UpdatePlayerData(string name, Sprite sprite, List<IPokerObject> cards);
+}
+
+public class Player : MonoBehaviour, IPokerObject, IPokerOwner, IPlayer
 {
     public IntReference lastBet;
     public IntReference currentTurn;
@@ -25,14 +47,14 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public int cash;
     public int currentBetTotal;
     public bool isTurn;
-    public bool isRealPlayer;
+   // public bool isRealPlayer;
     public string playerName;
     public int playerID;
     MoverAbility moverAbility;
     bool hasMoverAbility;
-    bool fillup;
-    bool dontflip;
-    bool dontswap;
+    //bool fillup;
+    //bool dontflip;
+    //bool dontswap;
     public PlayerRuntimeSet players;
     public GameObject control;
     public GameEvent hasPlayed;
@@ -42,6 +64,17 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     public IntVariable playerIncrease;
 
     public float movespeed = 1;
+
+    public GameObject GetPokerObject { get { return gameObject; } }
+
+    public bool fillUp { get; set; }
+    public bool dontFlip { get; set; }
+    public bool dontSwap { get; set; }
+    public bool isRealPlayer { get ; set; }
+    public Transform PokerObject { get { return transform; } }
+    public UnityAction action { get; set; }
+    public float speed { get { return movespeed; } set { movespeed = value; } }
+
     void OnEnable()
     {
         cash = startCash.Value;
@@ -49,13 +82,13 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         if (moverAbility != null)
             hasMoverAbility = true;
 
-        actionReal += finishedMovement;
+        // actionReal += finishedMovement;
     }
     void OnDisable()
     {
         players.Remove(this);
-        if(activePlayers.Value.Contains(playerID))
-        activePlayers.Value.Remove(playerID);
+        if (activePlayers.Value.Contains(playerID))
+            activePlayers.Value.Remove(playerID);
     }
     IEnumerator moveCardsToHand(int numberOfCards)
     {
@@ -69,7 +102,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         //        handparent.isForRealPlayer = true;
         //        handparent.fillup = true;
         //        moverAbility.Move(new List<IPokerObject>() { ob }, new List<Locations>() { handparent.startLocation }, new List<Locations>() { handparent.endLocationsList[i] }, handparent);
-                yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1);
         //    }
         //}
     }
@@ -79,14 +112,14 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         currentBetTotalDisplay.text = currentBetTotal.ToString();
     }
 
-    public void UpdatePlayerData(string name,Sprite sprite, List<IPokerObject> cards)
+    public void UpdatePlayerData(string name, Sprite sprite, List<IPokerObject> cards)
     {
         this.playerName = name;
         playerNameDisplay.text = name;
         gameObject.name = name;
         this.playerIcon.sprite = sprite;
         this.cards = cards;
-        foreach(IPokerObject crd in cards)
+        foreach (IPokerObject crd in cards)
         {
             Transform tr = (crd as Card).transform;
             tr.SetParent(transform);
@@ -98,23 +131,23 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
             Controls contrl = obj.GetComponent<Controls>();
             contrl.SetControls(this);
             controller = contrl.controller;
-          //  contrl.ShowCards(true);
+            //  contrl.ShowCards(true);
         }
         UpdateTextDisplay();
     }
     public void MoveToPlace()
     {
-       // StartCoroutine(moveCardsToHand(2));
+        // StartCoroutine(moveCardsToHand(2));
         if (hasMoverAbility && cards.Count > 0)
         {
-            fillup = false;
-            dontflip = false;
-            dontswap = false;
+            fillUp = false;
+            dontFlip = false;
+            dontSwap = false;
             movespeed = 1f;
             for (int i = 0; i < playerHandLocations.Count; i++)
             {
-                moverAbility.Move(new List<IPokerObject>() { cards[i] }, new List<Locations>() { dealerPosition}, new List<Locations>() { playerHandLocations[i]}, this);
-           }
+                moverAbility.Move(new List<IPokerObject>() { cards[i] }, new List<Locations>() { dealerPosition }, new List<Locations>() { playerHandLocations[i] }, this);
+            }
         }
     }
     public void AddToPlayers()
@@ -143,7 +176,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
 
         totalBet.Variable.ApplyChange(amount);
 
-       // playerIncrease.Value += 1;
+        // playerIncrease.Value += 1;
         //create chip that would be displayed
         GameObject go = Instantiate(chipObject.Value, transform.position, Quaternion.identity, chipparent.transform);
 
@@ -151,7 +184,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
 
         chip.parent = chipparent;
 
-        go.transform.SetParent(chip.parent.PokerObject());
+        go.transform.SetParent(chip.parent.PokerObject);
 
         //set the amount of the ship
 
@@ -169,7 +202,7 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     }
     public void Call()
     {
-       Bet(lastBet.Value);
+        Bet(lastBet.Value);
     }
     public void Raise(int amount)
     {
@@ -177,61 +210,61 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
     }
     public void Fold()
     {
-        if(activePlayers.Value.Contains(playerID))
-        activePlayers.Value.Remove(playerID);
+        if (activePlayers.Value.Contains(playerID))
+            activePlayers.Value.Remove(playerID);
         playerIncrease.Value -= 1;
     }
     public void AllIn()
     {
-       Bet(cash);
+        Bet(cash);
     }
 
-    public GameObject GetPokerObject()
-    {
-        return gameObject;
-    }
+    //public GameObject GetPokerObject()
+    //{
+    //    return gameObject;
+    //}
 
-    public Sprite GetFront()
-    {
-        return playerIcon.sprite; 
-    }
-    public Sprite GetBack()
-    {
-        return playerIcon.sprite; ;
-    }
-    bool IPokerOwner.isRealPlayer()
-    {
-        return isRealPlayer;
-    }
+    //public Sprite GetFront()
+    //{
+    //    return playerIcon.sprite;
+    //}
+    //public Sprite GetBack()
+    //{
+    //    return playerIcon.sprite; ;
+    //}
+    //bool IPokerOwner.isRealPlayer()
+    //{
+    //    return isRealPlayer;
+    //}
 
-    public Transform PokerObject()
-    {
-        return transform;
-    }
+    //public Transform PokerObject()
+    //{
+    //    return transform;
+    //}
 
-    public bool fillUp()
-    {
-        return fillup;
-    }
+    //public bool fillUp()
+    //{
+    //    return fillup;
+    //}
 
-    public bool dontFlip()
-    {
-        return dontflip;
-    }
+    //public bool dontFlip()
+    //{
+    //    return dontflip;
+    //}
 
-    public bool dontSwap()
-    {
-        return dontswap; 
-    }
-    public static void finishedMovement()
-    {
-        Debug.Log("finished moving on chips parent");
-    }
-    public UnityAction actionReal;
-    UnityAction IPokerOwner.action()
-    {
-        return actionReal;
-    }
+    //public bool dontSwap()
+    //{
+    //    return dontswap;
+    //}
+    //public static void finishedMovement()
+    //{
+    //    Debug.Log("finished moving on chips parent");
+    //}
+    //public UnityAction actionReal;
+    //UnityAction IPokerOwner.action()
+    //{
+    //    return actionReal;
+    //}
 
     public void ShouldPlay()
     {
@@ -260,8 +293,8 @@ public class Player : MonoBehaviour, IPokerObject,IPokerOwner
         hasPlayed.Raise();
     }
 
-    public float speed()
-    {
-        return movespeed;
-    }
+    //public float speed()
+    //{
+    //    return movespeed;
+    //}
 }

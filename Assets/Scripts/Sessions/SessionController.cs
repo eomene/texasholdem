@@ -7,8 +7,15 @@ using DG.Tweening;
 using System.Linq;
 using UnityEngine.Events;
 
-public class SessionController : MonoBehaviour
+public interface ISessionController
 {
+    void GameOver();
+    void HasPlayed();
+}
+
+public class SessionController : MonoBehaviour, ISessionController
+{
+    SessionControllerInternal sessionControllerInternal;
     public int numberOfPlayers;
     public IntReference lastBet;
     public IntReference currentTurn;
@@ -18,15 +25,19 @@ public class SessionController : MonoBehaviour
     public GameEvent shouldPlay;
     MoverAbility moverAbility;
     bool hasMoverAbility;
+    public IDeck realDeck;
     public Deck deck;
     IPokerOwner parent;
     public MoverParent uicards;
+   // public IMoverParent uicardsInterface;
     List<IPokerObject> dealercards = new List<IPokerObject>();
     public IntVariable playerIncrease;
     public FloatReference delayeBetweenMiddleCard;
     public float defaultV;
     private void Awake()
     {
+        sessionControllerInternal = new SessionControllerInternal(this);
+        realDeck =deck;
         moverAbility = GetComponent<MoverAbility>();
         if (moverAbility != null)
             hasMoverAbility = true;
@@ -50,20 +61,20 @@ public class SessionController : MonoBehaviour
     {
         for (int i = 0; i < numberOfCards; i++)
         {
-            IPokerObject ob = deck.GetLast();
+            IPokerObject ob = realDeck.GetLast();
             dealercards.Add(ob);
-            deck.RemoveLast();
-            ob.GetPokerObject().transform.SetParent(uicards.parentOfPositions);
+            realDeck.RemoveLast();
+            ob.GetPokerObject.transform.SetParent(uicards.parentOfPositions);
         }
 
         for (int i = 0; i < dealercards.Count; i++)
         {
             if (hasMoverAbility)
             {
-                (parent as MoverParent).dontflip = false;
-                (parent as MoverParent).isForRealPlayer = true;
-                (parent as MoverParent).fillup = true;
-                (parent as MoverParent).movespeed = delayeBetweenMiddleCard.Value;
+                parent.dontFlip = false;
+                parent.isRealPlayer = true;
+                parent.fillUp = true;
+                parent.speed = delayeBetweenMiddleCard.Value;
                 moverAbility.Move(new List<IPokerObject>() { dealercards[i] }, new List<Locations>() { uicards.startLocation }, new List<Locations>() { uicards.endLocationsList[i + 1] }, parent);
             }
             if (numberOfCards < 3)
@@ -109,6 +120,78 @@ public class SessionController : MonoBehaviour
         //equality is based on rank, not cards/suits/etc... so, for example, two Jack high straights
         //would be equal even though the cards have different suits.
     }
+}
+public class SessionControllerInternal
+{
+    SessionController sessionController;
+    public SessionControllerInternal(SessionController sessionController)
+    {
+        this.sessionController = sessionController;
+    }
+    //IEnumerator getCards(int numberOfCards, IDeck realDeck, List<IPokerObject> dealercards, IMoverParent uicards,bool hasMoverAbility,
+    //    IMoverAbility moverAbility,float delayeBetweenMiddleCard, Locations startLocation, List<Locations> endLocationsList, IPokerOwner parent,
+    //    float defaultV, IntReference currentTurn, int activePlayer, GameEvent shouldPlay)
+    //{
+    //    for (int i = 0; i < numberOfCards; i++)
+    //    {
+    //        IPokerObject ob = realDeck.GetLast();
+    //        dealercards.Add(ob);
+    //        realDeck.RemoveLast();
+    //        ob.GetPokerObject().transform.SetParent(uicards.parentOfPositionsInterface());
+    //    }
 
+    //    for (int i = 0; i < dealercards.Count; i++)
+    //    {
+    //        if (hasMoverAbility)
+    //        {
+    //            uicards.SetDontFlip(false);
+    //            uicards.SetIsRealPlayer(true);
+    //            uicards.SetFillUp(true);
+    //            uicards.SetMoveSpeed(delayeBetweenMiddleCard);
+    //            moverAbility.Move(new List<IPokerObject>() { dealercards[i] }, new List<Locations>() { startLocation }, new List<Locations>() {endLocationsList[i + 1] }, parent);
+    //        }
+    //        if (numberOfCards < 3)
+    //            delayeBetweenMiddleCard=0.1f;
+    //        else
+    //            delayeBetweenMiddleCard=defaultV;
+    //        yield return new WaitForSeconds(delayeBetweenMiddleCard);
+    //    }
+    //    float t = delayeBetweenMiddleCard * dealercards.Count;
+    //    yield return new WaitForSeconds(t);
 
+    //    currentTurn.Variable.SetValue(activePlayer);
+    //    shouldPlay.Raise();
+    //}
+
+    //public void HasPlayed(IntReference playerIncrease, IntList activePlayers, IntReference currentTurn, GameEvent shouldPlay, IntReference gameRound)
+    //{
+    //    playerIncrease.Variable.SetValue(playerIncrease.Value + 1);
+    //    if (playerIncrease.Value < activePlayers.Value.Count)
+    //    {
+    //        currentTurn.Variable.SetValue(activePlayers.Value[playerIncrease.Value]);
+    //        shouldPlay.Raise();
+    //    }
+    //    else
+    //    {
+    //        playerIncrease.Variable.SetValue(0);
+    //        gameRound.Variable.ApplyChange(1);
+    //        if (gameRound.Value == 1)
+    //            sessionController.StartCoroutine(getCards(3));
+    //        else if (gameRound.Value == 2)
+    //            sessionController.StartCoroutine(getCards(1));
+    //        else if (gameRound.Value == 3)
+    //            sessionController.StartCoroutine(getCards(1));
+    //        else if (gameRound.Value == 4)
+    //            GameOver();
+    //    }
+    //}
+
+    //public void GameOver()
+    //{
+    //    Debug.Log("Game Ended");
+
+    //    //equality is based on rank, not cards/suits/etc... so, for example, two Jack high straights
+    //    //would be equal even though the cards have different suits.
+    //}
+   
 }

@@ -3,29 +3,46 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class CardFlipAbility : MonoBehaviour
+public interface ICardFlipAbility
 {
+    void FlipCards(GameObject real);
+}
+
+public class CardFlipAbility : MonoBehaviour, ICardFlipAbility
+{
+    CardFlipAbilityInternal cardFlipAbilityInternal;
     public FloatReference moveSpeed;
-    SpriteSwaperAbility swapAbility;
+    ISpriteSwaperAbility swapAbility;
     bool hasSwapAbility;
+    private void Awake()
+    {
+        cardFlipAbilityInternal = new CardFlipAbilityInternal();
+    }
     private void Start()
     {
-        swapAbility = GetComponent<SpriteSwaperAbility>();
+        swapAbility = GetComponent<ISpriteSwaperAbility>();
         if (swapAbility != null)
             hasSwapAbility = true;
     }
     public void FlipCards(GameObject real)
     {
-        real.transform.DOScaleX(0, moveSpeed.Value).OnComplete(() =>
+        cardFlipAbilityInternal.FlipCards(real,hasSwapAbility,swapAbility,moveSpeed.Value);
+    }
+}
+public class CardFlipAbilityInternal
+{
+    public void FlipCards(GameObject real, bool hasSwapAbility,ISpriteSwaperAbility swapAbility,float moveSpeed)
+    {
+        real.transform.DOScaleX(0, moveSpeed).OnComplete(() =>
         {
-            if(hasSwapAbility)
-            swapAbility.SwapSprites(real, true);
+            if (hasSwapAbility)
+                swapAbility.SwapSprites(real, true);
 
-            real.transform.DOScaleX(1, moveSpeed.Value).OnComplete(() =>
+            real.transform.DOScaleX(1, moveSpeed).OnComplete(() =>
             {
 
             });
         });
     }
-
 }
+

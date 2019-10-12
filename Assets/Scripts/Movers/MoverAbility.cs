@@ -4,54 +4,67 @@ using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
 
-
-public class MoverAbility : MonoBehaviour
+public interface IMoverAbility
 {
+    void Move(List<IPokerObject> objectsToMove, List<Locations> startLocations, List<Locations> endLocations, IPokerOwner parent);
+}
+
+public class MoverAbility : MonoBehaviour, IMoverAbility
+{
+    MoverAbilityInternal moverAbilityInternal;
     //public FloatReference moveSpeed;
-    SpriteSwaperAbility swapAbility;
-    CardFlipAbility cardFlipAbility;
+    ISpriteSwaperAbility swapAbility;
+    ICardFlipAbility cardFlipAbility;
     bool hasCardFlipAbility;
     bool hasSwapAbility;
+    private void Awake()
+    {
+        moverAbilityInternal = new MoverAbilityInternal();
+    }
     public void OnEnable()
     {
-        swapAbility = GetComponent<SpriteSwaperAbility>();
+        swapAbility = GetComponent<ISpriteSwaperAbility>();
         if (swapAbility != null)
             hasSwapAbility = true;
-        cardFlipAbility = GetComponent<CardFlipAbility>();
+        cardFlipAbility = GetComponent<ICardFlipAbility>();
         if (cardFlipAbility != null)
             hasCardFlipAbility = true;
     }
     public void Move(List<IPokerObject> objectsToMove, List<Locations> startLocations, List<Locations> endLocations, IPokerOwner parent)
     {
-        if (objectsToMove.Count <= endLocations.Count && objectsToMove.Count <= startLocations.Count)
-        {
-         
-            for (int i = 0; i < objectsToMove.Count; i++)
-            {
-                    if (!endLocations[i].isFilled)
-                    {
-                        var endObject = endLocations[i];
-                        var ObjectToMove = objectsToMove[i].GetPokerObject();
-                        ObjectToMove.transform.localPosition = new Vector2(startLocations[i].location.x, startLocations[i].location.y);
-                        ObjectToMove.transform.DOLocalMove(endLocations[i].location, parent.speed()).OnComplete(() =>
-                        {
-                            endObject.isFilled = parent.fillUp();
-                            if (hasSwapAbility && !parent.dontSwap() && parent.dontFlip())
-                                swapAbility.SwapSprites(ObjectToMove, parent.isRealPlayer());
-                            if (hasCardFlipAbility && parent.isRealPlayer() && !parent.dontFlip())
-                            {
-                                cardFlipAbility.FlipCards(ObjectToMove);
-                            }
-                            parent.action();
-
-                        }).SetEase(Ease.Linear);//set ease type for movement
-                    }
-            }
-        }
+        moverAbilityInternal.Move(objectsToMove, startLocations, endLocations, parent, hasSwapAbility, hasCardFlipAbility, swapAbility, cardFlipAbility);
     }
 
-    public void finished()
+}
+
+public class MoverAbilityInternal
+{
+    public void Move(List<IPokerObject> objectsToMove, List<Locations> startLocations, List<Locations> endLocations, IPokerOwner parent,bool hasSwapAbility,bool hasCardFlipAbility,ISpriteSwaperAbility swapAbility,ICardFlipAbility cardFlipAbility)
     {
-        Debug.Log("I know you wont call me");
+        if (objectsToMove.Count <= endLocations.Count && objectsToMove.Count <= startLocations.Count)
+        {
+
+            for (int i = 0; i < objectsToMove.Count; i++)
+            {
+                if (!endLocations[i].isFilled)
+                {
+                    var endObject = endLocations[i];
+                    var ObjectToMove = objectsToMove[i].GetPokerObject;
+                    ObjectToMove.transform.localPosition = new Vector2(startLocations[i].location.x, startLocations[i].location.y);
+                    ObjectToMove.transform.DOLocalMove(endLocations[i].location, parent.speed).OnComplete(() =>
+                    {
+                        endObject.isFilled = parent.fillUp;
+                        if (hasSwapAbility && !parent.dontSwap && parent.dontFlip)
+                            swapAbility.SwapSprites(ObjectToMove, parent.isRealPlayer);
+                        if (hasCardFlipAbility && parent.isRealPlayer && !parent.dontFlip)
+                        {
+                            cardFlipAbility.FlipCards(ObjectToMove);
+                        }
+                        //parent.action();
+
+                    }).SetEase(Ease.Linear);//set ease type for movement
+                }
+            }
+        }
     }
 }

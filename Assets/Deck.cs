@@ -2,7 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Deck : MonoBehaviour
+public interface IDeck
+{
+    void Add(Card thing);
+    void Clear();
+    int Count();
+    Card GetLast();
+    void Remove(Card thing);
+    void RemoveLast();
+    void Shuffle();
+}
+
+public class Deck : MonoBehaviour, IDeck
 {
     public List<Card> Items = new List<Card>();
     public System.Random rnd = new System.Random();
