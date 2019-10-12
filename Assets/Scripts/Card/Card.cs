@@ -88,32 +88,6 @@ public class Card : MonoBehaviour, IPokerObject, IPokerSpriteBack, IPokerSpriteF
         gameObject.name = suitEnum.ToString() + cardEnum.ToString();
     }
 
-    //public GameObject GetPokerObject()
-    //{
-    //    return gameObject;
-    //}
-    //public GameObject GetPokerDummy()
-    //{
-    //    return dummy;
-    //}
-    //public Sprite GetFront()
-    //{
-    //    return front;
-    //}
-    //public Sprite GetBack()
-    //{
-    //    return back;
-    //}
-
-    //public bool isRealPlayer()
-    //{
-    //    return isRealPlayerCard;
-    //}
-
-    //public Transform PokerObject()
-    //{
-    //    return transform;
-    //}
 
 }
 public class CardInternal

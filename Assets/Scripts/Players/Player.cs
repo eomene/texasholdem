@@ -219,53 +219,6 @@ public class Player : MonoBehaviour, IPokerObject, IPokerOwner, IPlayer
         Bet(cash);
     }
 
-    //public GameObject GetPokerObject()
-    //{
-    //    return gameObject;
-    //}
-
-    //public Sprite GetFront()
-    //{
-    //    return playerIcon.sprite;
-    //}
-    //public Sprite GetBack()
-    //{
-    //    return playerIcon.sprite; ;
-    //}
-    //bool IPokerOwner.isRealPlayer()
-    //{
-    //    return isRealPlayer;
-    //}
-
-    //public Transform PokerObject()
-    //{
-    //    return transform;
-    //}
-
-    //public bool fillUp()
-    //{
-    //    return fillup;
-    //}
-
-    //public bool dontFlip()
-    //{
-    //    return dontflip;
-    //}
-
-    //public bool dontSwap()
-    //{
-    //    return dontswap;
-    //}
-    //public static void finishedMovement()
-    //{
-    //    Debug.Log("finished moving on chips parent");
-    //}
-    //public UnityAction actionReal;
-    //UnityAction IPokerOwner.action()
-    //{
-    //    return actionReal;
-    //}
-
     public void ShouldPlay()
     {
         if (currentTurn == playerID)
@@ -293,8 +246,4 @@ public class Player : MonoBehaviour, IPokerObject, IPokerOwner, IPlayer
         hasPlayed.Raise();
     }
 
-    //public float speed()
-    //{
-    //    return movespeed;
-    //}
 }
