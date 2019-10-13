@@ -245,10 +245,6 @@ MonoBehaviour:
     locationHolder: {fileID: 2267178468164412050}
     isFilled: 0
   endLocationsList: []
-  isForRealPlayer: 0
-  fillup: 0
-  dontflip: 1
-  dontswap: 1
   parentOfPositions: {fileID: 1883545357373808938}
   movespeed: 0
 --- !u!1 &1777475023785984624
@@ -1085,6 +1081,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0901bd1e708812741885da16d5c4b8f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxNumberOfPlayers:
+    UseConstant: 0
+    ConstantValue: 0
+    Variable: {fileID: 11400000, guid: 8a5159ad3323f374f955495e62735898, type: 2}
   lastBet:
     UseConstant: 0
     ConstantValue: 0
@@ -1122,10 +1122,8 @@ MonoBehaviour:
   cash: 0
   currentBetTotal: 0
   isTurn: 0
-  isRealPlayer: 0
   playerName: 
   playerID: 0
-  dummy: {fileID: 0}
   players: {fileID: 11400000, guid: b7a6cfc4bc14df7489b4716943082b98, type: 2}
   control: {fileID: 632886515850197294, guid: 8085146a5967b534eaaacb042ca5eb8a, type: 3}
   hasPlayed: {fileID: 11400000, guid: febef52cb7f31de46b9ffaa00a42cebe, type: 2}
@@ -1721,10 +1719,6 @@ MonoBehaviour:
     locationHolder: {fileID: 257664723044540421}
     isFilled: 0
   endLocationsList: []
-  isForRealPlayer: 0
-  fillup: 0
-  dontflip: 1
-  dontswap: 1
   parentOfPositions: {fileID: 6198816360992909606}
   movespeed: 0.5
 --- !u!1 &5236508531122884259

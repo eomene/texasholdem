@@ -789,6 +789,17 @@ PrefabInstance:
       propertyPath: defaultV
       value: 0.5
       objectReference: {fileID: 0}
+    - target: {fileID: 6335648430420508776, guid: 5a8e087779af18c44b6b536cc6d3462f,
+        type: 3}
+      propertyPath: maxNumberOfPlayers.UseConstant
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6335648430420508776, guid: 5a8e087779af18c44b6b536cc6d3462f,
+        type: 3}
+      propertyPath: maxNumberOfPlayers.Variable
+      value: 
+      objectReference: {fileID: 11400000, guid: 8a5159ad3323f374f955495e62735898,
+        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5a8e087779af18c44b6b536cc6d3462f, type: 3}
 --- !u!1001 &6944299665227826620

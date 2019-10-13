@@ -37,7 +37,12 @@ public class PlayerCreator : MonoBehaviour, IPlayerCreator
 
     public IEnumerator CreatePlayers()
     {
-        for (int i = 0; i < playerPositions.Items.Count; i++)
+        if (maxNumberOfPlayers > playerPositions.Items.Count)
+        {
+            Debug.Log("Table can handle only " + playerPositions.Items.Count + "Players");
+            yield break;
+        }
+        for (int i = 0; i < maxNumberOfPlayers.Value; i++)
         {
             //create a new player gameobject in one of the positions already set in the scene
             GameObject newPlayerGameObject = Instantiate(player.Value, playerPositions.Items[i]);

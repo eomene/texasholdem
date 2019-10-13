@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxNumberOfPlayers:
-    UseConstant: 1
+    UseConstant: 0
     ConstantValue: 0
-    Variable: {fileID: 0}
+    Variable: {fileID: 11400000, guid: 8a5159ad3323f374f955495e62735898, type: 2}
   player: {fileID: 11400000, guid: 027fbc6c98b507848a39fed34cd45b05, type: 2}
   dealerLocation: {fileID: 11400000, guid: 5482bdbefd84e4243b748038c7cca2ef, type: 2}
   playerPositions: {fileID: 11400000, guid: f569b26544708ff43826c8732b204c30, type: 2}

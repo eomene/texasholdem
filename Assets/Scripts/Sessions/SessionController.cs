@@ -16,7 +16,7 @@ public interface ISessionController
 public class SessionController : MonoBehaviour, ISessionController
 {
     SessionControllerInternal sessionControllerInternal;
-    public int numberOfPlayers;
+    public IntReference maxNumberOfPlayers;
     public IntReference lastBet;
     public IntReference currentTurn;
     public IntReference totalBet;

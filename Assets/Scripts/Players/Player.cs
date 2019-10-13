@@ -30,6 +30,7 @@ public interface IPlayer
 
 public class Player : MonoBehaviour, IPokerObject, IPokerOwner, IPlayer
 {
+    public IntReference maxNumberOfPlayers;
     public IntReference lastBet;
     public IntReference currentTurn;
     public IntReference gameRound;
@@ -155,7 +156,7 @@ public class Player : MonoBehaviour, IPokerObject, IPokerOwner, IPlayer
         players.Add(this);
         activePlayers.Value.Add(playerID);
 
-        if (activePlayers.Value.Count >= 6)
+        if (activePlayers.Value.Count >= maxNumberOfPlayers.Value)
         {
             currentTurn.Variable.SetValue(-1);
             playerIncrease.Value = -1;
