@@ -38,13 +38,15 @@ public class Card : MonoBehaviour, IPokerObject, IPokerSpriteBack, IPokerSpriteF
     }
     private void OnEnable()
     {
+        if (RuntimeDeck != null) 
         RuntimeDeck.Add(this);
         // Debug.Log("Deck Count: "+ RuntimeDeck.Count());
     }
 
     public void OnDisable()
     {
-        RuntimeDeck.Remove(this);
+        if (RuntimeDeck != null)
+            RuntimeDeck.Remove(this);
         // Debug.Log("Deck Count: " + RuntimeDeck.Count());
     }
     public void SetUpCard(Sprite back, Sprite front, GameEnums.SuitEnum suitEnum, int value)

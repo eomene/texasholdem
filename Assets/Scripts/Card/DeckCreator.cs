@@ -67,7 +67,7 @@ public class DeckCreatorInternal
     {
         this.deckCreator = deckCreator;
     }
-    public void CreateDeck(IDeck deck, string DiamondsLocation,string ClubsLocation,string HeartsLocation,
+    public int CreateDeck(IDeck deck, string DiamondsLocation,string ClubsLocation,string HeartsLocation,
     string SpadesLocation,
     string CardsBackLocation,GameObject Card, GameObject creatorObject,bool needRealObject)
     {
@@ -114,6 +114,7 @@ public class DeckCreatorInternal
             Card newCard = myInstantiate(Card, parent.transform, needRealObject);
             newCard.SetUpCard(back, spades[i], cardtype, i + 1);
         }
+        return deck.Count();
     }
     public void Shuffle(IDeck deck)
     {

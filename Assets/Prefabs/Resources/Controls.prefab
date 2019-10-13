@@ -2111,7 +2111,7 @@ MonoBehaviour:
     UseConstant: 0
     ConstantValue: 0
     Variable: {fileID: 11400000, guid: 7c74dfff2703d7944b506138bbb90be6, type: 2}
-  player: {fileID: 11400000, guid: b7a6cfc4bc14df7489b4716943082b98, type: 2}
+  player: {fileID: 11400000, guid: 7b6bb42fcf971f94d9f81e4e61053c87, type: 2}
   raiseAmount: {fileID: 632886516059083186}
   cards: []
   cardsHolder: {fileID: 632886514853455286}

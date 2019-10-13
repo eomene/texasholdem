@@ -1124,7 +1124,7 @@ MonoBehaviour:
   isTurn: 0
   playerName: 
   playerID: 0
-  players: {fileID: 11400000, guid: b7a6cfc4bc14df7489b4716943082b98, type: 2}
+  players: {fileID: 11400000, guid: 7b6bb42fcf971f94d9f81e4e61053c87, type: 2}
   control: {fileID: 632886515850197294, guid: 8085146a5967b534eaaacb042ca5eb8a, type: 3}
   hasPlayed: {fileID: 11400000, guid: febef52cb7f31de46b9ffaa00a42cebe, type: 2}
   activePlayers: {fileID: 11400000, guid: 4682688ac7deba44f89ada57427016cd, type: 2}

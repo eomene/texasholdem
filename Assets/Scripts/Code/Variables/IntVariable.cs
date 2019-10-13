@@ -9,7 +9,7 @@ public class IntVariable : ScriptableObject
     public string DeveloperDescription = "";
 #endif
     public int Value;
-
+     
     public void SetValue(int value)
     {
         Value = value;
