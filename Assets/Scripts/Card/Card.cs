@@ -58,34 +58,9 @@ public class Card : MonoBehaviour, IPokerObject, IPokerSpriteBack, IPokerSpriteF
         View.sprite = back;
 
         this.suitEnum = suitEnum;
-        // this.card = card;
-        if (value == 1)
-            cardEnum = GameEnums.CardEnum.Ace;
-        if (value == 2)
-            cardEnum = GameEnums.CardEnum.Two;
-        if (value == 3)
-            cardEnum = GameEnums.CardEnum.Three;
-        if (value == 4)
-            cardEnum = GameEnums.CardEnum.Four;
-        if (value == 5)
-            cardEnum = GameEnums.CardEnum.Five;
-        if (value == 6)
-            cardEnum = GameEnums.CardEnum.Six;
-        if (value == 7)
-            cardEnum = GameEnums.CardEnum.Seven;
-        if (value == 8)
-            cardEnum = GameEnums.CardEnum.Eight;
-        if (value == 9)
-            cardEnum = GameEnums.CardEnum.Nine;
-        if (value == 10)
-            cardEnum = GameEnums.CardEnum.Ten;
-        if (value == 11)
-            cardEnum = GameEnums.CardEnum.Jack;
-        if (value == 12)
-            cardEnum = GameEnums.CardEnum.Queen;
-        if (value == 13)
-            cardEnum = GameEnums.CardEnum.King;
 
+        cardEnum = (GameEnums.CardEnum)value;
+  
         cardInternal.SetUpCard(back, front, suitEnum, value, View);
         gameObject.name = suitEnum.ToString() + cardEnum.ToString();
     }
@@ -114,31 +89,6 @@ public class CardInternal
 
         this.suitEnum = suitEnum;
         // this.card = card;
-        if (value == 1)
-            cardEnum = GameEnums.CardEnum.Ace;
-        if (value == 2)
-            cardEnum = GameEnums.CardEnum.Two;
-        if (value == 3)
-            cardEnum = GameEnums.CardEnum.Three;
-        if (value == 4)
-            cardEnum = GameEnums.CardEnum.Four;
-        if (value == 5)
-            cardEnum = GameEnums.CardEnum.Five;
-        if (value == 6)
-            cardEnum = GameEnums.CardEnum.Six;
-        if (value == 7)
-            cardEnum = GameEnums.CardEnum.Seven;
-        if (value == 8)
-            cardEnum = GameEnums.CardEnum.Eight;
-        if (value == 9)
-            cardEnum = GameEnums.CardEnum.Nine;
-        if (value == 10)
-            cardEnum = GameEnums.CardEnum.Ten;
-        if (value == 11)
-            cardEnum = GameEnums.CardEnum.Jack;
-        if (value == 12)
-            cardEnum = GameEnums.CardEnum.Queen;
-        if (value == 13)
-            cardEnum = GameEnums.CardEnum.King;
+        cardEnum = (GameEnums.CardEnum)value;
     }
 }

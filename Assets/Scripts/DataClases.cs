@@ -66,6 +66,7 @@ public class GameEnums
     //public enum TypeOfRepeat { diamonds, hearts, spades, clubs };
     public enum CardEnum : int
     {
+        Ace = 1,
         Two = 2,
         Three = 3,
         Four = 4,
@@ -78,7 +79,7 @@ public class GameEnums
         Jack = 11,
         Queen = 12,
         King = 13,
-        Ace = 14
+     
     }
     public enum SuitEnum : int
     {
